@@ -36,3 +36,7 @@
 *.ilk
 *.sln
 *.props
+*.ipch
+QtGuiApplication1/.vs/QtGuiApplication1/v16/.suo
+*.opendb
+*.db
