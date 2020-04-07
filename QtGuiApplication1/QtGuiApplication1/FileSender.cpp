@@ -1,12 +1,15 @@
 #include "FileSender.h"
+#include <fstream>
+using namespace std;
 
 void FilesSender::BeginSending()
 {
 	SingleFileSender fs,fs1;
+	fs.fileName = "D:\\src";
+	fs.fileExt = ".txt";
 	fs.start();
-	//fs1.start();
 	fs.wait();
-	//fs1.wait();
+	fs1.wait();
 }
 
 void SingleFileSender::run()
@@ -21,7 +24,7 @@ void SingleFileSender::run()
 		sockaddr_in ClientAddr;
 		ClientAddr.sin_family = AF_INET;
 		ClientAddr.sin_port = htons(8888);
-		char IPdotdec[] = "127.0.0.1";
+		char IPdotdec[] = "192.168.18.3";
 		inet_pton(AF_INET, IPdotdec, &ClientAddr.sin_addr.S_un);
 		if (::connect(ClientSocket, (LPSOCKADDR)&ClientAddr, sizeof(ClientAddr)) == SOCKET_ERROR) 
 		{
@@ -29,39 +32,55 @@ void SingleFileSender::run()
 			WSACleanup();
 			return;
 		}
-		char fileName[] = "D:\\src.txt";
-		FILE* fp = NULL;
-		errno_t err = 0;
-		while (true) {
-			err = fopen_s(&fp, fileName, "rb");
-			if (err == 0) break;
-		}
-		fseek(fp, 0, SEEK_END);
-		int fileSize = ftell(fp);
+		ifstream fp;
+		fp.open(fileName + fileExt, ios::binary);
+		fp.seekg(0, ios::end);
+		int fileSize = fp.tellg();
+		
+
 		int CheckSend;
-		const int groupLength = 255;
-		unsigned char buffer[groupLength];
-		int count = fileSize / groupLength + 1;
-		sprintf_s((char*)buffer, 20, "%d", count);
-		const char* SendLength = (char*)buffer;
+		unsigned char buffer[1024];
+		int count = fileSize / 1024 + 1;
 
-		CheckSend = send(ClientSocket, SendLength, strlen(SendLength), 0);
-		fseek(fp, 0, SEEK_SET);
-		for (int i = 0; i < count; i++)
+		int x = 3, beginPosition = 0;
+
+		ifstream getLog;
+		getLog.open(fileName + ".tmp");
+		
+		if (getLog.is_open())
 		{
-			int tempLength = fread_s(buffer,255, sizeof(unsigned char), groupLength, fp);
+			getLog >> beginPosition;
+			getLog.close();
+		}
+		string fullpath = fileName + fileExt;
+		memcpy_s(&buffer[0], 4, &x, 4);
+		memcpy_s(&buffer[4], 4, &fileSize, 4);
+		memcpy_s(&buffer[8], 4, &beginPosition, 4);
+		memcpy_s(&buffer[12], 1012, fullpath.c_str(), fullpath.length());
+		const char* SendLength = (char*)buffer;
+		fp.seekg(beginPosition * 1024L, ios::beg);
+
+		CheckSend = send(ClientSocket, SendLength, 1024, 0);
+		
+		for (int i = beginPosition; i < count; i++)
+		{
+			fp.read((char*)buffer, 1024);
 			const unsigned char* SendData = buffer;
-			CheckSend = send(ClientSocket, (char*)SendData, strlen((char*)SendData), 0);
+			CheckSend = send(ClientSocket, (char*)SendData, fp.gcount(), 0);
 
-
-			if (CheckSend == SOCKET_ERROR) {
+			if (CheckSend == SOCKET_ERROR || isInterruptionRequested())
+			{
+				ofstream putLog;
+				putLog.open(fileName + ".tmp");
+				putLog << i - 1;
+				putLog.close();
 				closesocket(ClientSocket);
 				WSACleanup();
 				return;
 			}
 		}
 		closesocket(ClientSocket);
-		fclose(fp);
+		fp.close();
 	WSACleanup();
 	return ;
 }

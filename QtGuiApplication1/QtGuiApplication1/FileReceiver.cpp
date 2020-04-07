@@ -2,25 +2,38 @@
 
 void SingleFileReceiver::run()
 {
-	const int DataSize = 255;
-	unsigned char RevData[DataSize + 1];
+	unsigned char RevData[1024];
 	ofstream fileWriter;
-	fileWriter.open(R"(D:\FileTransfer\src.txt)",ios::binary);
-	while (1)
+
+	int rev = recv(socket, (char*)RevData, 1024, 0);
+	if (rev > 0)
 	{
-		int rev = recv(socket, (char*)RevData, DataSize, 0);
-		if (rev > 0) {
-			RevData[rev] = '\0';
-			int RevLength;
-			sscanf_s((char*)RevData, "%d", &RevLength);
-			for (int i = 0; i < RevLength; i++) {
-				rev = recv(socket, (char*)RevData, DataSize, 0);
-				fileWriter.write((char*)RevData, 255);
+		int RevLength, beginPosition;
+		string fullName = (char*)&RevData[12];
+		fullName = "D:\\FileTransfer\\src.txt";
+		memcpy_s(&RevLength, 4, &RevData[4], 4);
+		memcpy_s(&beginPosition, 4, &RevData[8], 4);
+		if (beginPosition == 0)fileWriter.open(fullName, ios::binary);
+		else fileWriter.open(fullName, ios::app | ios::binary);
+		RevLength /= 1024;
+		++RevLength;
+		fileWriter.seekp(beginPosition * 1024, ios::beg);
+		for (int i = beginPosition; i < RevLength; i++)
+		{
+			rev = recv(socket, (char*)RevData, 1024, 0);
+			fileWriter.write((char*)RevData, rev);
+			if (isInterruptionRequested())
+			{
+				break;
 			}
-			fileWriter.close();
-			break;
 		}
+		
+		fileWriter.close();
+		closesocket(socket);
+		
 	}
+
+
 }
 void Listener::run()
 {
