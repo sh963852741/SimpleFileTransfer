@@ -12,17 +12,24 @@ QtGuiApplication1::QtGuiApplication1(QWidget *parent)
 	ui.setupUi(this);
 	FilesReceiver* fr = new FilesReceiver;
 	FilesSender* fs = new FilesSender;
-	//fr->setParent(this);
-	//fs->setParent(this);
-	fr->moveToThread(&receiveFiles);
+	//fr->moveToThread(&receiveFiles);
+	fr->BeginListening();
 	fs->moveToThread(&sendFiles);
-	connect(ui.pushButton, &QPushButton::clicked, fr, &FilesReceiver::BeginListening);
-	//connect(ui.pushButton_2, &QPushButton::clicked, this, &QtGuiApplication1::StopListening);
+	sendFiles.start();
+	//connect(ui.pushButton, &QPushButton::clicked, fr, &FilesReceiver::BeginListening);
+	connect(ui.pushButton_2, &QPushButton::clicked, fr, &FilesReceiver::StopReceiving);
+	//connect(ui.pushButton_2, &QPushButton::clicked, fr, &FilesReceiver::StopListening);
 	connect(ui.pushButton_3, &QPushButton::clicked, fs, &FilesSender::BeginSending);
 	//connect(&receiveFiles, &QThread::started, this, &QtGuiApplication1::ShowMsg);
 	connect(fr, &FilesReceiver::SingleFileGot, this, &QtGuiApplication1::ShowMsg);
 	receiveFiles.start();
-	sendFiles.start();
+	
+}
+
+QtGuiApplication1::~QtGuiApplication1()
+{
+	sendFiles.quit();
+	receiveFiles.quit();
 }
 
 void QtGuiApplication1::CloseWindows()
@@ -36,9 +43,7 @@ void QtGuiApplication1::ShowMsg()
 	ui.textEdit->insertPlainText("123");
 }
 
-void QtGuiApplication1::StopListening()
+void QtGuiApplication1::StopReceiving()
 {
-	receiveFiles.terminate();
-	//receiveFiles.quit();
-	receiveFiles.wait();
+	
 }

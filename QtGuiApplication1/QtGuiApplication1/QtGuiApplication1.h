@@ -10,12 +10,13 @@ class QtGuiApplication1 : public QMainWindow
 
 public:
 	QtGuiApplication1(QWidget *parent = Q_NULLPTR);
+	~QtGuiApplication1();
 	void CloseWindows();
 private:
 	Ui::QtGuiApplication1Class ui;
 	QThread receiveFiles;
 	QThread sendFiles;
 public slots:
-	void StopListening();
+	void StopReceiving();
 	void ShowMsg();
 };

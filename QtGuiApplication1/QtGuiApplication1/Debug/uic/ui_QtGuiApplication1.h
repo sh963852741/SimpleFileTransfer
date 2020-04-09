@@ -42,13 +42,13 @@ public:
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         pushButton = new QPushButton(centralWidget);
         pushButton->setObjectName(QString::fromUtf8("pushButton"));
-        pushButton->setGeometry(QRect(330, 310, 131, 23));
+        pushButton->setGeometry(QRect(320, 310, 131, 23));
         textEdit = new QTextEdit(centralWidget);
         textEdit->setObjectName(QString::fromUtf8("textEdit"));
         textEdit->setGeometry(QRect(10, 10, 581, 281));
         pushButton_2 = new QPushButton(centralWidget);
         pushButton_2->setObjectName(QString::fromUtf8("pushButton_2"));
-        pushButton_2->setGeometry(QRect(470, 310, 131, 23));
+        pushButton_2->setGeometry(QRect(460, 310, 131, 23));
         pushButton_3 = new QPushButton(centralWidget);
         pushButton_3->setObjectName(QString::fromUtf8("pushButton_3"));
         pushButton_3->setGeometry(QRect(10, 310, 131, 23));
@@ -73,7 +73,7 @@ public:
     {
         QtGuiApplication1Class->setWindowTitle(QCoreApplication::translate("QtGuiApplication1Class", "QtGuiApplication1", nullptr));
         pushButton->setText(QCoreApplication::translate("QtGuiApplication1Class", "Begin Listening", nullptr));
-        pushButton_2->setText(QCoreApplication::translate("QtGuiApplication1Class", "Stop Listening", nullptr));
+        pushButton_2->setText(QCoreApplication::translate("QtGuiApplication1Class", "Stop Receving", nullptr));
         pushButton_3->setText(QCoreApplication::translate("QtGuiApplication1Class", "Send", nullptr));
     } // retranslateUi
 

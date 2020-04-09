@@ -10,6 +10,7 @@ class FilesSender :public QObject
 	Q_OBJECT
 public slots:
 	void BeginSending();
+	void StopSending();
 };
 
 class SingleFileSender :public QThread

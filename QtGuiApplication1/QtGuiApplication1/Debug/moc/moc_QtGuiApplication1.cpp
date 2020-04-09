@@ -33,12 +33,12 @@ struct qt_meta_stringdata_QtGuiApplication1_t {
 static const qt_meta_stringdata_QtGuiApplication1_t qt_meta_stringdata_QtGuiApplication1 = {
     {
 QT_MOC_LITERAL(0, 0, 17), // "QtGuiApplication1"
-QT_MOC_LITERAL(1, 18, 13), // "StopListening"
+QT_MOC_LITERAL(1, 18, 13), // "StopReceiving"
 QT_MOC_LITERAL(2, 32, 0), // ""
 QT_MOC_LITERAL(3, 33, 7) // "ShowMsg"
 
     },
-    "QtGuiApplication1\0StopListening\0\0"
+    "QtGuiApplication1\0StopReceiving\0\0"
     "ShowMsg"
 };
 #undef QT_MOC_LITERAL
@@ -73,7 +73,7 @@ void QtGuiApplication1::qt_static_metacall(QObject *_o, QMetaObject::Call _c, in
         auto *_t = static_cast<QtGuiApplication1 *>(_o);
         Q_UNUSED(_t)
         switch (_id) {
-        case 0: _t->StopListening(); break;
+        case 0: _t->StopReceiving(); break;
         case 1: _t->ShowMsg(); break;
         default: ;
         }
