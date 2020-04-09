@@ -1,39 +1,70 @@
 #include "FileReceiver.h"
 
+
 void SingleFileReceiver::run()
 {
 	unsigned char RevData[1024];
 	ofstream fileWriter;
-
+	
 	int rev = recv(socket, (char*)RevData, 1024, 0);
 	if (rev > 0)
 	{
-		int RevLength, beginPosition;
-		string fullName = (char*)&RevData[12];
-		fullName = "D:\\FileTransfer\\src.txt";
-		memcpy_s(&RevLength, 4, &RevData[4], 4);
-		memcpy_s(&beginPosition, 4, &RevData[8], 4);
-		if (beginPosition == 0)fileWriter.open(fullName, ios::binary);
-		else fileWriter.open(fullName, ios::app | ios::binary);
-		RevLength /= 1024;
-		++RevLength;
-		fileWriter.seekp(beginPosition * 1024, ios::beg);
-		for (int i = beginPosition; i < RevLength; i++)
+		unsigned int fileLength;
+		string fileName = (char*)&RevData[12];
+		string fullPath = saveFlod + fileName;
+		string tempfile = fullPath;
+		tempfile.replace(tempfile.begin() + tempfile.find_last_of('.'), tempfile.end(), ".tmp");
+		memcpy_s(&fileLength, 4, &RevData[4], 4);
+
+		unsigned int requestPosition;
+		fileWriter.open(fullPath, ios::_Nocreate | ios::binary);
+
+		/*先判断文件是否需要断点续传*/
+		if (fileWriter.is_open()) // 如果文件已经下载
+		{
+			ifstream readTmpFile;
+			readTmpFile.open(tempfile);
+			if (readTmpFile.is_open())readTmpFile >> requestPosition;
+			else requestPosition = 0;
+			readTmpFile.close();
+		}
+		else // 如果文件没有下载
+		{
+			fileWriter.open(fullPath, ios::app | ios::binary);
+			fileWriter.seekp(fileLength, ios::beg);
+			requestPosition = 0;
+		}
+
+		/*请求客户端从指定位置开始发送文件*/
+		send(socket, (char*)&requestPosition, 4, 0);
+
+		/*开始接收文件*/
+		fileWriter.seekp(requestPosition, ios::beg);
+		for (unsigned int i = requestPosition; i < fileLength;)
 		{
 			rev = recv(socket, (char*)RevData, 1024, 0);
-			fileWriter.write((char*)RevData, rev);
-			if (isInterruptionRequested())
+
+			/* 如果传输中断 */
+			if (isInterruptionRequested() || rev == SOCKET_ERROR|| rev == 0)
 			{
-				break;
+				/*记录当前下载进度*/
+				ofstream writetemp;
+				writetemp.open(tempfile, ios::trunc);
+				writetemp << i;
+				writetemp.close();
+				fileWriter.close();
+				closesocket(socket);
+				return;
 			}
+
+			i += rev;
+			fileWriter.write((char*)RevData, rev);
 		}
-		
 		fileWriter.close();
+		char msg[] = "finish";
+		send(socket, msg, 7, 0);
 		closesocket(socket);
-		
 	}
-
-
 }
 void Listener::run()
 {
@@ -128,7 +159,8 @@ void FilesReceiver::SingleFileFinished()
 
 void FilesReceiver::ReceiveSingleFile(SOCKET socket)
 {
-	SingleFileReceiver* fr=new SingleFileReceiver;
+	SingleFileReceiver* fr = new SingleFileReceiver;
+	fr->saveFlod = R"(D:\FileTransfer\)";
 	connect(fr, &SingleFileReceiver::finished, this, &FilesReceiver::SingleFileFinished);
 	fr->socket = socket;
 	fr->start();

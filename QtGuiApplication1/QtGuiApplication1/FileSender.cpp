@@ -5,9 +5,12 @@ using namespace std;
 void FilesSender::BeginSending()
 {
 	SingleFileSender fs,fs1;
-	fs.fileName = "D:\\src";
-	fs.fileExt = ".txt";
+	fs.floderName = R"(D:\系统镜像\)";
+	fs.fileName = "cn_visual_studio_2010_ultimate_x86_dvd_532347.iso";
+	fs1.floderName= R"(D:\系统镜像\)";
+	fs1.fileName = "mclauncher_1.5.0.5724.exe";
 	fs.start();
+	fs1.start();
 	fs.wait();
 	fs1.wait();
 }
@@ -33,36 +36,29 @@ void SingleFileSender::run()
 			return;
 		}
 		ifstream fp;
-		fp.open(fileName + fileExt, ios::binary);
+		fp.open(floderName + fileName, ios::binary);
 		fp.seekg(0, ios::end);
-		int fileSize = fp.tellg();
+		unsigned int fileSize = fp.tellg();
 		
 
 		int CheckSend;
 		unsigned char buffer[1024];
-		int count = fileSize / 1024 + 1;
 
-		int x = 3, beginPosition = 0;
-
-		ifstream getLog;
-		getLog.open(fileName + ".tmp");
-		
-		if (getLog.is_open())
-		{
-			getLog >> beginPosition;
-			getLog.close();
-		}
-		string fullpath = fileName + fileExt;
+		/*告知服务器开始上传文件*/
+		unsigned int x = 3, beginPosition = 0;
+		memset(buffer, 0, 1024);
 		memcpy_s(&buffer[0], 4, &x, 4);
 		memcpy_s(&buffer[4], 4, &fileSize, 4);
 		memcpy_s(&buffer[8], 4, &beginPosition, 4);
-		memcpy_s(&buffer[12], 1012, fullpath.c_str(), fullpath.length());
+		memcpy_s(&buffer[12], 1012, fileName.c_str(), fileName.length());
 		const char* SendLength = (char*)buffer;
-		fp.seekg(beginPosition * 1024L, ios::beg);
-
 		CheckSend = send(ClientSocket, SendLength, 1024, 0);
+
+		/*移动文件指针*/
+		int l = recv(ClientSocket, (char*)&beginPosition, 4, 0);
+		fp.seekg(beginPosition, ios::beg);
 		
-		for (int i = beginPosition; i < count; i++)
+		for (unsigned int i = beginPosition; i < fileSize; i+= CheckSend)
 		{
 			fp.read((char*)buffer, 1024);
 			const unsigned char* SendData = buffer;
@@ -70,17 +66,18 @@ void SingleFileSender::run()
 
 			if (CheckSend == SOCKET_ERROR || isInterruptionRequested())
 			{
-				ofstream putLog;
-				putLog.open(fileName + ".tmp");
-				putLog << i - 1;
-				putLog.close();
 				closesocket(ClientSocket);
 				WSACleanup();
 				return;
 			}
 		}
-		closesocket(ClientSocket);
 		fp.close();
+		if (recv(ClientSocket, (char*)buffer, 7, 0) == SOCKET_ERROR)
+		{
+			
+		}
+		closesocket(ClientSocket);
+		
 	WSACleanup();
 	return ;
 }
