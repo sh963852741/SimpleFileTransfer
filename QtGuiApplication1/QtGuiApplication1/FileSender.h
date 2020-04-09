@@ -17,7 +17,7 @@ class SingleFileSender :public QThread
 	Q_OBJECT
 public:
 	string fileName;
-	string fileExt;
+	string floderName;
 public:
 	void run();
 };

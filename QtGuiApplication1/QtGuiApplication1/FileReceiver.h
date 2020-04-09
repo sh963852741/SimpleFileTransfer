@@ -33,8 +33,7 @@ class SingleFileReceiver : public QThread
 {
 	Q_OBJECT
 public:
-	unsigned int fileLength;
-	unsigned char* data;
+	string saveFlod;
 	void run();
 	SOCKET socket;
 };
