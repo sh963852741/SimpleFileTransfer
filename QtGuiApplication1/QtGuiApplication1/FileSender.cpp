@@ -2,23 +2,24 @@
 #include <fstream>
 using namespace std;
 
-void FilesSender::BeginSending()
+void FilesSender::BeginSending(QString basepath, QStringList filename)
 {
-	SingleFileSender fs, fs1;
-	fs.floderName = R"(D:\系统镜像\)";
-	fs.fileName = "cn_visual_studio_2010_ultimate_x86_dvd_532347.iso";
-	fs1.floderName = R"(D:\系统镜像\)";
-	fs1.fileName = "mclauncher_1.5.0.5724.exe";
-	fs.start();
-	fs1.start();
-	fs.wait();
-	fs1.wait();
-	fs.quit();
-	fs1.quit();
+	for (int i = 0; i < filename.size(); i++)
+	{
+		SingleFileSender* fs = new SingleFileSender;
+		fs->seqID = i;
+		fs->setAutoDelete(true);
+		connect(fs, &SingleFileSender::begin, this, &FilesSender::process_begin);
+		connect(fs, &SingleFileSender::complete, this, &FilesSender::process_complete);
+		fs->floderName = basepath.toLocal8Bit();
+		fs->fileName = filename[i].toStdString();
+		threadpool.start(fs);
+	}
 }
 
 void SingleFileSender::run()
 {
+	emit begin(seqID);
 	const int RecDataSize = 255;
 	WORD SockVersion = MAKEWORD(2, 2);
 	WSADATA WsaData;
@@ -66,10 +67,11 @@ void SingleFileSender::run()
 		const unsigned char* SendData = buffer;
 		CheckSend = send(ClientSocket, (char*)SendData, fp.gcount(), 0);
 
-		if (CheckSend == SOCKET_ERROR || isInterruptionRequested())
+		if (CheckSend == SOCKET_ERROR)
 		{
 			closesocket(ClientSocket);
 			WSACleanup();
+			emit complete(seqID, false, "发送失败");
 			return;
 		}
 	}
@@ -80,9 +82,25 @@ void SingleFileSender::run()
 	}
 	closesocket(ClientSocket);
 	WSACleanup();
+	emit complete(seqID, true, "");
 	return;
 }
 
 void FilesSender::StopSending()
 {
+	
 }
+
+void FilesSender::process_begin(unsigned short id)
+{
+	emit rpt_process(id, QString::fromLocal8Bit("开始传输"));
+}
+void FilesSender::process_process(unsigned short id, int value)
+{
+	emit rpt_process(id, QString::fromLocal8Bit("传输中"));
+}
+void FilesSender::process_complete(unsigned short id, bool success, QString msg)
+{
+	emit rpt_process(id, QString::fromLocal8Bit(success ? "传输完成" : "传输失败"));
+}
+

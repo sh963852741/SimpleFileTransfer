@@ -12,6 +12,7 @@ void SingleFileReceiver::run()
 		unsigned int fileLength;
 		string fileName = (char*)&RevData[12];
 		string fullPath = saveFlod + fileName;
+		emit begin(QString::fromStdString(fullPath));
 		string tempfile = fullPath;
 		tempfile.replace(tempfile.begin() + tempfile.find_last_of('.'), tempfile.end(), ".tmp");
 		memcpy_s(&fileLength, 4, &RevData[4], 4);
@@ -54,6 +55,7 @@ void SingleFileReceiver::run()
 				writetemp.close();
 				fileWriter.close();
 				closesocket(socket);
+				emit finished(seqID, false, QString::fromLocal8Bit("传输中断"));
 				return;
 			}
 
@@ -64,7 +66,7 @@ void SingleFileReceiver::run()
 		char msg[] = "finish";
 		send(socket, msg, 7, 0);
 		closesocket(socket);
-		emit finished();
+		emit finished(seqID, true, "");
 	}
 }
 void Listener::run()
@@ -91,7 +93,6 @@ void Listener::run()
 
 	while (!isInterruptionRequested())
 	{
-		
 		ClientSocket = accept(SeverListen, (SOCKADDR*)&RemoteAddr, &RemoteAddrSize);
 		if (ClientSocket != INVALID_SOCKET)
 		{
@@ -117,16 +118,23 @@ void FilesReceiver::StopListening()
 	listener->terminate();
 }
 
-void FilesReceiver::SingleFileFinished()
+void FilesReceiver::process_Finished(unsigned short id, bool success, QString filePath)
 {
-	emit SingleFileGot();
+	emit ReceiveFinished(id, QString::fromLocal8Bit(success ? "传输完成" : "传输失败"));
+}
+
+void FilesReceiver::process_Begin(QString filePath)
+{
+	emit BeginRecvSingleFile(filePath);
 }
 
 void FilesReceiver::ReceiveSingleFile(SOCKET socket)
 {
 	SingleFileReceiver* fr = new SingleFileReceiver;
-	fr->saveFlod = R"(D:\FileTransfer\)";
-	connect(fr, &SingleFileReceiver::finished, this, &FilesReceiver::SingleFileFinished);
+	fr->seqID = recvCount++;
+	fr->saveFlod = this->saveFlod.toLocal8Bit();
+	connect(fr, &SingleFileReceiver::begin, this, &FilesReceiver::process_Begin);
+	connect(fr, &SingleFileReceiver::finished, this, &FilesReceiver::process_Finished);
 	
 	fr->socket = socket;
 	threadpool.start(fr);
@@ -137,4 +145,9 @@ void FilesReceiver::StopReceiving()
 	SingleFileReceiver::stop = true;
 	threadpool.waitForDone();
 	SingleFileReceiver::stop = false;
+}
+
+void FilesReceiver::updateRecvFloder(QString floder)
+{
+	this->saveFlod = floder;
 }

@@ -21,27 +21,35 @@ signals:
 class FilesReceiver :public QObject
 {
 	Q_OBJECT
+public:
+	QString saveFlod;
 public slots:
 	void BeginListening();
 	void StopListening();
-	void SingleFileFinished();
+	void process_Finished(unsigned short id, bool success, QString filePath);
+	void process_Begin(QString filePath);
 	void ReceiveSingleFile(SOCKET socket);
-	void StopReceiving();
+	void StopReceiving(); 
+	void updateRecvFloder(QString floder);
 private:
 	Listener* listener=new Listener;
 	QThreadPool threadpool;
+	unsigned short recvCount = 0;
 signals:
-	void SingleFileGot();
+	void BeginRecvSingleFile(QString filePath);
+	void ReceiveFinished(unsigned short id, QString msg);
 };
 
 class SingleFileReceiver :public QObject, public QRunnable
 {
 	Q_OBJECT
 public:
+	unsigned short seqID;
 	static bool stop;
 	string saveFlod;
 	void run();
 	SOCKET socket;
 signals:
-	void finished();
+	void finished(unsigned short id, bool success, QString msg);
+	void begin(QString filePath);
 };
