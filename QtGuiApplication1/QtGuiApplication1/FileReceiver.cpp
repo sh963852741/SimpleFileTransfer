@@ -1,5 +1,6 @@
 #include "FileReceiver.h"
-
+#include <direct.h>
+#include <io.h>
 bool SingleFileReceiver::stop = false;
 void SingleFileReceiver::run()
 {
@@ -31,6 +32,20 @@ void SingleFileReceiver::run()
 		}
 		else // 如果文件没有下载
 		{
+			if (access(fullPath.c_str(), 6) == -1)
+			{
+				for (int i = 0; i < fullPath.length(); ++i)
+				{
+					if (fullPath[i] == '\\')
+					{
+						string temp=fullPath.substr(0, i);
+						if (access(temp.c_str(), 0) == -1)
+						{
+							mkdir(temp.c_str());
+						}
+					}
+				}
+			}
 			fileWriter.open(fullPath, ios::app | ios::binary);
 			fileWriter.seekp(fileLength, ios::beg);
 			requestPosition = 0;
@@ -63,10 +78,20 @@ void SingleFileReceiver::run()
 			fileWriter.write((char*)RevData, rev);
 		}
 		fileWriter.close();
-		char msg[] = "finish";
-		send(socket, msg, 7, 0);
+		MD5 md5;
+		md5.update(ifstream(fullPath));
+		string msg = md5.toString();
+		send(socket, msg.c_str(), 33, 0);
+		rev = recv(socket, (char*)RevData, 16, 0);
+		if (strcmp((char*)RevData, "finish") == 0)
+		{
+			emit finished(seqID, true, "");
+		}
+		else
+		{
+			emit finished(seqID, false, "");
+		}
 		closesocket(socket);
-		emit finished(seqID, true, "");
 	}
 }
 void Listener::run()
@@ -143,6 +168,7 @@ void FilesReceiver::ReceiveSingleFile(SOCKET socket)
 void FilesReceiver::StopReceiving()
 {
 	SingleFileReceiver::stop = true;
+	threadpool.clear();
 	threadpool.waitForDone();
 	SingleFileReceiver::stop = false;
 }

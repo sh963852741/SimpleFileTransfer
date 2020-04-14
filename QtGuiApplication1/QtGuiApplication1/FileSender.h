@@ -17,7 +17,7 @@ public slots:
 	void process_process(unsigned short id,int value);
 	void process_complete(unsigned short id, bool success, QString msg);
 private:
-	QThreadPool threadpool;
+	QThreadPool sthreadpool;
 signals:
 	void rpt_process(unsigned short id,QString msg);
 };

@@ -1,9 +1,11 @@
 #include "FileSender.h"
 #include <fstream>
+#include "md5.h"
 using namespace std;
 
 void FilesSender::BeginSending(QString basepath, QStringList filename)
 {
+	sthreadpool.setMaxThreadCount(4);
 	for (int i = 0; i < filename.size(); i++)
 	{
 		SingleFileSender* fs = new SingleFileSender;
@@ -12,8 +14,8 @@ void FilesSender::BeginSending(QString basepath, QStringList filename)
 		connect(fs, &SingleFileSender::begin, this, &FilesSender::process_begin);
 		connect(fs, &SingleFileSender::complete, this, &FilesSender::process_complete);
 		fs->floderName = basepath.toLocal8Bit();
-		fs->fileName = filename[i].toStdString();
-		threadpool.start(fs);
+		fs->fileName = filename[i].toLocal8Bit();
+		sthreadpool.start(fs);
 	}
 }
 
@@ -67,7 +69,7 @@ void SingleFileSender::run()
 		const unsigned char* SendData = buffer;
 		CheckSend = send(ClientSocket, (char*)SendData, fp.gcount(), 0);
 
-		if (CheckSend == SOCKET_ERROR)
+		if (CheckSend == SOCKET_ERROR || CheckSend == 0)
 		{
 			closesocket(ClientSocket);
 			WSACleanup();
@@ -75,10 +77,29 @@ void SingleFileSender::run()
 			return;
 		}
 	}
-	fp.close();
-	if (recv(ClientSocket, (char*)buffer, 7, 0) == SOCKET_ERROR)
+	fp.seekg(0, ios::beg);
+	CheckSend = recv(ClientSocket, (char*)buffer, 33, 0);
+	if (CheckSend == SOCKET_ERROR || CheckSend == 0)
 	{
-
+		emit complete(seqID, false, "∑¢ÀÕ ß∞‹");
+	}
+	else
+	{
+		MD5 md5;
+		md5.update(ifstream(floderName + fileName));
+		string res = md5.toString();
+		if (strcmp(res.c_str(), (char*)buffer) != 0)
+		{
+			char msg[] = "md5 check error";
+			send(ClientSocket, msg, 16, 0);
+			emit complete(seqID, false, "—È÷§ ß∞‹");
+			return;
+		}
+		else
+		{
+			char msg[] = "finish";
+			send(ClientSocket, msg, 16, 0);
+		}
 	}
 	closesocket(ClientSocket);
 	WSACleanup();

@@ -18,7 +18,7 @@ QtGuiApplication1::QtGuiApplication1(QWidget *parent)
 	fr->BeginListening();
 	fs->moveToThread(&sendFiles);
 	
-	//connect(ui.pushButton, &QPushButton::clicked, fr, &FilesReceiver::BeginListening);
+	connect(ui.pushButton, &QPushButton::clicked, this, &QtGuiApplication1::clearRecvTable);
 	connect(ui.pushButton_2, &QPushButton::clicked, fr, &FilesReceiver::StopReceiving);
 	//connect(ui.pushButton_2, &QPushButton::clicked, fr, &FilesReceiver::StopListening);
 	connect(ui.pushButton_3, &QPushButton::clicked, this, &QtGuiApplication1::SendFiles);
@@ -116,7 +116,12 @@ void QtGuiApplication1::selectRecvFloder()
 	QString dirPath = QFileDialog::getExistingDirectory(this, "choose src Directory", "/");
 	if (dirPath == "")return;
 	ui.lineEdit_3->setText(QDir::toNativeSeparators(dirPath));
-	emit updateRecvFloder(dirPath);
+	emit updateRecvFloder(QDir::toNativeSeparators(dirPath) + '\\');
+}
+
+void QtGuiApplication1::clearRecvTable()
+{
+	ui.tableWidget_2->clear();
 }
 
 void QtGuiApplication1::StopReceiving()

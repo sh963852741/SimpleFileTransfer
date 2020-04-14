@@ -22,8 +22,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_QtGuiApplication1_t {
-    QByteArrayData data[17];
-    char stringdata0[193];
+    QByteArrayData data[18];
+    char stringdata0[208];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -48,7 +48,8 @@ QT_MOC_LITERAL(12, 123, 14), // "ShowRecvingMsg"
 QT_MOC_LITERAL(13, 138, 8), // "filePath"
 QT_MOC_LITERAL(14, 147, 9), // "SendFiles"
 QT_MOC_LITERAL(15, 157, 18), // "ShowRecvingMsgById"
-QT_MOC_LITERAL(16, 176, 16) // "selectRecvFloder"
+QT_MOC_LITERAL(16, 176, 16), // "selectRecvFloder"
+QT_MOC_LITERAL(17, 193, 14) // "clearRecvTable"
 
     },
     "QtGuiApplication1\0BeginSending\0\0"
@@ -56,7 +57,7 @@ QT_MOC_LITERAL(16, 176, 16) // "selectRecvFloder"
     "floder\0StopReceiving\0showFileList\0"
     "ShowSendingMsg\0id\0msg\0ShowRecvingMsg\0"
     "filePath\0SendFiles\0ShowRecvingMsgById\0"
-    "selectRecvFloder"
+    "selectRecvFloder\0clearRecvTable"
 };
 #undef QT_MOC_LITERAL
 
@@ -66,7 +67,7 @@ static const uint qt_meta_data_QtGuiApplication1[] = {
        8,       // revision
        0,       // classname
        0,    0, // classinfo
-       9,   14, // methods
+      10,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -74,17 +75,18 @@ static const uint qt_meta_data_QtGuiApplication1[] = {
        2,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    2,   59,    2, 0x06 /* Public */,
-       5,    1,   64,    2, 0x06 /* Public */,
+       1,    2,   64,    2, 0x06 /* Public */,
+       5,    1,   69,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-       7,    0,   67,    2, 0x0a /* Public */,
-       8,    0,   68,    2, 0x0a /* Public */,
-       9,    2,   69,    2, 0x0a /* Public */,
-      12,    1,   74,    2, 0x0a /* Public */,
-      14,    0,   77,    2, 0x0a /* Public */,
-      15,    2,   78,    2, 0x0a /* Public */,
-      16,    0,   83,    2, 0x0a /* Public */,
+       7,    0,   72,    2, 0x0a /* Public */,
+       8,    0,   73,    2, 0x0a /* Public */,
+       9,    2,   74,    2, 0x0a /* Public */,
+      12,    1,   79,    2, 0x0a /* Public */,
+      14,    0,   82,    2, 0x0a /* Public */,
+      15,    2,   83,    2, 0x0a /* Public */,
+      16,    0,   88,    2, 0x0a /* Public */,
+      17,    0,   89,    2, 0x0a /* Public */,
 
  // signals: parameters
     QMetaType::Void, QMetaType::QString, QMetaType::QStringList,    3,    4,
@@ -97,6 +99,7 @@ static const uint qt_meta_data_QtGuiApplication1[] = {
     QMetaType::Void, QMetaType::QString,   13,
     QMetaType::Void,
     QMetaType::Void, QMetaType::UShort, QMetaType::QString,   10,   11,
+    QMetaType::Void,
     QMetaType::Void,
 
        0        // eod
@@ -117,6 +120,7 @@ void QtGuiApplication1::qt_static_metacall(QObject *_o, QMetaObject::Call _c, in
         case 6: _t->SendFiles(); break;
         case 7: _t->ShowRecvingMsgById((*reinterpret_cast< unsigned short(*)>(_a[1])),(*reinterpret_cast< QString(*)>(_a[2]))); break;
         case 8: _t->selectRecvFloder(); break;
+        case 9: _t->clearRecvTable(); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -167,13 +171,13 @@ int QtGuiApplication1::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 9)
+        if (_id < 10)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 9;
+        _id -= 10;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 9)
+        if (_id < 10)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 9;
+        _id -= 10;
     }
     return _id;
 }

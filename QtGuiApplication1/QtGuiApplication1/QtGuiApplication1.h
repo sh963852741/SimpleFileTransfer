@@ -5,6 +5,7 @@
 #include <qthread.h>
 #include <QList>
 #include <qfiledialog.h>
+#include "md5.h"
 using namespace std;
 
 class QtGuiApplication1 : public QMainWindow
@@ -28,6 +29,7 @@ public slots:
 	void SendFiles();
 	void ShowRecvingMsgById(unsigned short id, QString msg);
 	void selectRecvFloder();
+	void clearRecvTable();
 signals:
 	void BeginSending(QString basepath, QStringList filename);
 	void updateRecvFloder(QString floder);

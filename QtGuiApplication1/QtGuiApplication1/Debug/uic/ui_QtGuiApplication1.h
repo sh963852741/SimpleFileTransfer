@@ -168,7 +168,7 @@ public:
 
         retranslateUi(QtGuiApplication1Class);
 
-        tabWidget->setCurrentIndex(0);
+        tabWidget->setCurrentIndex(1);
         pushButton_3->setDefault(false);
 
 

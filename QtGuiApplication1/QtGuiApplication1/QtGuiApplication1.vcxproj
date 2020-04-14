@@ -83,6 +83,7 @@
     <ClCompile Include="FileReceiver.cpp" />
     <ClCompile Include="FileSender.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="md5.cpp" />
     <ClCompile Include="QtGuiApplication1.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -99,6 +100,9 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="FileSender.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="md5.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
