@@ -1,9 +1,9 @@
 #include "FileSender.h"
-#include <fstream>
 #include "md5.h"
+#include <fstream>
 using namespace std;
 
-void FilesSender::BeginSending(QString basepath, QStringList filename)
+void FilesSender::BeginSending(QString basepath, QStringList filename,QString IPaddress)
 {
 	sthreadpool.setMaxThreadCount(4);
 	for (int i = 0; i < filename.size(); i++)
@@ -13,6 +13,8 @@ void FilesSender::BeginSending(QString basepath, QStringList filename)
 		fs->setAutoDelete(true);
 		connect(fs, &SingleFileSender::begin, this, &FilesSender::process_begin);
 		connect(fs, &SingleFileSender::complete, this, &FilesSender::process_complete);
+		fs->ipAddress = IPaddress.mid(0, IPaddress.indexOf(":")).toLocal8Bit();
+		fs->port = IPaddress.mid(IPaddress.indexOf(":")+1).toLocal8Bit();
 		fs->floderName = basepath.toLocal8Bit();
 		fs->fileName = filename[i].toLocal8Bit();
 		sthreadpool.start(fs);
@@ -31,8 +33,8 @@ void SingleFileSender::run()
 	if (ClientSocket == INVALID_SOCKET)return;
 	sockaddr_in ClientAddr;
 	ClientAddr.sin_family = AF_INET;
-	ClientAddr.sin_port = htons(8888);
-	char IPdotdec[] = "192.168.18.3";
+	ClientAddr.sin_port = htons(atoi(port.c_str()));
+	const char* IPdotdec = ipAddress.c_str();
 	inet_pton(AF_INET, IPdotdec, &ClientAddr.sin_addr.S_un);
 	if (::connect(ClientSocket, (LPSOCKADDR)&ClientAddr, sizeof(ClientAddr)) == SOCKET_ERROR)
 	{
@@ -109,7 +111,7 @@ void SingleFileSender::run()
 
 void FilesSender::StopSending()
 {
-	
+
 }
 
 void FilesSender::process_begin(unsigned short id)

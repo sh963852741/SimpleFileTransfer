@@ -4,11 +4,12 @@
 #include<WinSock2.h>
 #include<Ws2tcpip.h>
 #include<qtextcodec.h>
+#include <QMessageBox>
 #include <QDir>
 #pragma comment(lib,"ws2_32.lib")
 
 using namespace std;
-QtGuiApplication1::QtGuiApplication1(QWidget *parent)
+QtGuiApplication1::QtGuiApplication1(QWidget* parent)
 	: QMainWindow(parent)
 {
 	ui.setupUi(this);
@@ -17,7 +18,7 @@ QtGuiApplication1::QtGuiApplication1(QWidget *parent)
 	fr->moveToThread(&receiveFiles);
 	fr->BeginListening();
 	fs->moveToThread(&sendFiles);
-	
+
 	connect(ui.pushButton, &QPushButton::clicked, this, &QtGuiApplication1::clearRecvTable);
 	connect(ui.pushButton_2, &QPushButton::clicked, fr, &FilesReceiver::StopReceiving);
 	//connect(ui.pushButton_2, &QPushButton::clicked, fr, &FilesReceiver::StopListening);
@@ -44,11 +45,11 @@ QtGuiApplication1::~QtGuiApplication1()
 
 void QtGuiApplication1::CloseWindows()
 {
-	
+
 	this->close();
 }
 
-QStringList QtGuiApplication1::getFiles(QString path,QString attachPath)
+QStringList QtGuiApplication1::getFiles(QString path, QString attachPath)
 {
 	QDir dir(path + attachPath);
 	QStringList fileList = dir.entryList(QDir::Files | QDir::Hidden | QDir::NoSymLinks);
@@ -103,7 +104,15 @@ void QtGuiApplication1::SendFiles()
 	{
 		fileList << QDir::toNativeSeparators(ui.tableWidget->item(i, 0)->text());
 	}
-	emit BeginSending(ui.lineEdit_2->text(), fileList);
+	if (ui.lineEdit->text()=="") {
+		QMessageBox::critical(this,"Error","Target IP and port input cannot be null!");
+		return;
+	}
+	else if (ui.lineEdit->text().indexOf(":") < 0) {
+		QMessageBox::critical(this, "Error", "Input format error, should enter \"destination IP : port number\"!");
+		return;
+	}
+	emit BeginSending(ui.lineEdit_2->text(), fileList, ui.lineEdit->text());
 }
 
 void QtGuiApplication1::ShowRecvingMsgById(unsigned short id, QString msg)
@@ -126,7 +135,11 @@ void QtGuiApplication1::clearRecvTable()
 
 void QtGuiApplication1::StopReceiving()
 {
-	
+
 }
 
+void QtGuiApplication1::InputIP()
+{
+	//ui.lineEdit->
+}
 

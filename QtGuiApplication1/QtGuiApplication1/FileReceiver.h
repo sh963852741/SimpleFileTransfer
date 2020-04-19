@@ -1,8 +1,8 @@
 #pragma once
 #include "QtGuiApplication1.h"
-#include <QThread>
-#include <QThreadPool>
-#include <QRunnable>
+#include <QtCore/QThread>
+#include <QtCore/QThreadPool>
+#include <QtCore/QRunnable>
 #include<WinSock2.h>
 #include<Ws2tcpip.h>
 #include<fstream>
@@ -29,10 +29,10 @@ public slots:
 	void process_Finished(unsigned short id, bool success, QString filePath);
 	void process_Begin(QString filePath);
 	void ReceiveSingleFile(SOCKET socket);
-	void StopReceiving(); 
+	void StopReceiving();
 	void updateRecvFloder(QString floder);
 private:
-	Listener* listener=new Listener;
+	Listener* listener = new Listener;
 	QThreadPool threadpool;
 	unsigned short recvCount = 0;
 signals:
