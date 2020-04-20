@@ -6,7 +6,7 @@ void SingleFileReceiver::run()
 {
 	unsigned char RevData[1024];
 	ofstream fileWriter;
-	
+
 	int rev = recv(socket, (char*)RevData, 1024, 0);
 	if (rev > 0)
 	{
@@ -38,7 +38,7 @@ void SingleFileReceiver::run()
 				{
 					if (fullPath[i] == '\\')
 					{
-						string temp=fullPath.substr(0, i);
+						string temp = fullPath.substr(0, i);
 						if (access(temp.c_str(), 0) == -1)
 						{
 							mkdir(temp.c_str());
@@ -61,7 +61,7 @@ void SingleFileReceiver::run()
 			rev = recv(socket, (char*)RevData, 1024, 0);
 
 			/* 如果传输中断 */
-			if (stop || rev == SOCKET_ERROR|| rev == 0)
+			if (stop || rev == SOCKET_ERROR || rev == 0)
 			{
 				/*记录当前下载进度*/
 				ofstream writetemp;
@@ -160,7 +160,7 @@ void FilesReceiver::ReceiveSingleFile(SOCKET socket)
 	fr->saveFlod = this->saveFlod.toLocal8Bit();
 	connect(fr, &SingleFileReceiver::begin, this, &FilesReceiver::process_Begin);
 	connect(fr, &SingleFileReceiver::finished, this, &FilesReceiver::process_Finished);
-	
+
 	fr->socket = socket;
 	threadpool.start(fr);
 }

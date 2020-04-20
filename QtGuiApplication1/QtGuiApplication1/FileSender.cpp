@@ -1,9 +1,9 @@
 #include "FileSender.h"
-#include <fstream>
 #include "md5.h"
+#include <fstream>
 using namespace std;
 
-void FilesSender::BeginSending(QString basepath, QStringList filename)
+void FilesSender::BeginSending(QString basepath, QStringList filename,QString IPaddress)
 {
 	sthreadpool.setMaxThreadCount(4);
 	for (int i = 0; i < filename.size(); i++)
@@ -13,6 +13,8 @@ void FilesSender::BeginSending(QString basepath, QStringList filename)
 		fs->setAutoDelete(true);
 		connect(fs, &SingleFileSender::begin, this, &FilesSender::process_begin);
 		connect(fs, &SingleFileSender::complete, this, &FilesSender::process_complete);
+		fs->ipAddress = IPaddress.mid(0, IPaddress.indexOf(":")).toLocal8Bit();
+		fs->port = IPaddress.mid(IPaddress.indexOf(":")+1).toLocal8Bit();
 		fs->floderName = basepath.toLocal8Bit();
 		fs->fileName = filename[i].toLocal8Bit();
 		sthreadpool.start(fs);
@@ -31,8 +33,8 @@ void SingleFileSender::run()
 	if (ClientSocket == INVALID_SOCKET)return;
 	sockaddr_in ClientAddr;
 	ClientAddr.sin_family = AF_INET;
-	ClientAddr.sin_port = htons(8888);
-	char IPdotdec[] = "139.159.159.236";
+	ClientAddr.sin_port = htons(atoi(port.c_str()));
+	const char* IPdotdec = ipAddress.c_str();
 	inet_pton(AF_INET, IPdotdec, &ClientAddr.sin_addr.S_un);
 	if (::connect(ClientSocket, (LPSOCKADDR)&ClientAddr, sizeof(ClientAddr)) == SOCKET_ERROR)
 	{
@@ -49,7 +51,7 @@ void SingleFileSender::run()
 	int CheckSend;
 	unsigned char buffer[1024];
 
-	/*¸æÖª·þÎñÆ÷¿ªÊ¼ÉÏ´«ÎÄ¼þ*/
+	/*ï¿½ï¿½Öªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½Ï´ï¿½ï¿½Ä¼ï¿½*/
 	unsigned int x = 3, beginPosition = 0;
 	memset(buffer, 0, 1024);
 	memcpy_s(&buffer[0], 4, &x, 4);
@@ -59,7 +61,7 @@ void SingleFileSender::run()
 	const char* SendLength = (char*)buffer;
 	CheckSend = send(ClientSocket, SendLength, 1024, 0);
 
-	/*ÒÆ¶¯ÎÄ¼þÖ¸Õë*/
+	/*ï¿½Æ¶ï¿½ï¿½Ä¼ï¿½Ö¸ï¿½ï¿½*/
 	int l = recv(ClientSocket, (char*)&beginPosition, 4, 0);
 	fp.seekg(beginPosition, ios::beg);
 
@@ -73,7 +75,7 @@ void SingleFileSender::run()
 		{
 			closesocket(ClientSocket);
 			WSACleanup();
-			emit complete(seqID, false, "·¢ËÍÊ§°Ü");
+			emit complete(seqID, false, "ï¿½ï¿½ï¿½ï¿½Ê§ï¿½ï¿½");
 			return;
 		}
 	}
@@ -81,7 +83,7 @@ void SingleFileSender::run()
 	CheckSend = recv(ClientSocket, (char*)buffer, 33, 0);
 	if (CheckSend == SOCKET_ERROR || CheckSend == 0)
 	{
-		emit complete(seqID, false, "·¢ËÍÊ§°Ü");
+		emit complete(seqID, false, "ï¿½ï¿½ï¿½ï¿½Ê§ï¿½ï¿½");
 	}
 	else
 	{
@@ -92,7 +94,7 @@ void SingleFileSender::run()
 		{
 			char msg[] = "md5 check error";
 			send(ClientSocket, msg, 16, 0);
-			emit complete(seqID, false, "ÑéÖ¤Ê§°Ü");
+			emit complete(seqID, false, "ï¿½ï¿½Ö¤Ê§ï¿½ï¿½");
 			return;
 		}
 		else
@@ -109,19 +111,19 @@ void SingleFileSender::run()
 
 void FilesSender::StopSending()
 {
-	
+
 }
 
 void FilesSender::process_begin(unsigned short id)
 {
-	emit rpt_process(id, QString::fromLocal8Bit("¿ªÊ¼´«Êä"));
+	emit rpt_process(id, QString::fromLocal8Bit("ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½"));
 }
 void FilesSender::process_process(unsigned short id, int value)
 {
-	emit rpt_process(id, QString::fromLocal8Bit("´«ÊäÖÐ"));
+	emit rpt_process(id, QString::fromLocal8Bit("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"));
 }
 void FilesSender::process_complete(unsigned short id, bool success, QString msg)
 {
-	emit rpt_process(id, QString::fromLocal8Bit(success ? "´«ÊäÍê³É" : "´«ÊäÊ§°Ü"));
+	emit rpt_process(id, QString::fromLocal8Bit(success ? "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½" : "ï¿½ï¿½ï¿½ï¿½Ê§ï¿½ï¿½"));
 }
 

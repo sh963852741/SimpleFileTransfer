@@ -29,32 +29,32 @@ QT_BEGIN_NAMESPACE
 class Ui_QtGuiApplication1Class
 {
 public:
-    QWidget *centralWidget;
-    QTabWidget *tabWidget;
-    QWidget *send;
-    QTableWidget *tableWidget;
-    QPushButton *pushButton_3;
-    QLineEdit *lineEdit;
-    QLabel *label;
-    QWidget *layoutWidget;
-    QGridLayout *gridLayout;
-    QLabel *label_2;
-    QPushButton *pushButton_4;
-    QLineEdit *lineEdit_2;
-    QWidget *recv;
-    QTableWidget *tableWidget_2;
-    QPushButton *pushButton_2;
-    QPushButton *pushButton;
-    QWidget *layoutWidget_2;
-    QGridLayout *gridLayout_2;
-    QLabel *label_3;
-    QPushButton *pushButton_5;
-    QLineEdit *lineEdit_3;
-    QMenuBar *menuBar;
-    QToolBar *mainToolBar;
-    QStatusBar *statusBar;
+    QWidget* centralWidget;
+    QTabWidget* tabWidget;
+    QWidget* send;
+    QTableWidget* tableWidget;
+    QPushButton* pushButton_3;
+    QLineEdit* lineEdit;
+    QLabel* label;
+    QWidget* layoutWidget;
+    QGridLayout* gridLayout;
+    QLabel* label_2;
+    QPushButton* pushButton_4;
+    QLineEdit* lineEdit_2;
+    QWidget* recv;
+    QTableWidget* tableWidget_2;
+    QPushButton* pushButton_2;
+    QPushButton* pushButton;
+    QWidget* layoutWidget_2;
+    QGridLayout* gridLayout_2;
+    QLabel* label_3;
+    QPushButton* pushButton_5;
+    QLineEdit* lineEdit_3;
+    QMenuBar* menuBar;
+    QToolBar* mainToolBar;
+    QStatusBar* statusBar;
 
-    void setupUi(QMainWindow *QtGuiApplication1Class)
+    void setupUi(QMainWindow* QtGuiApplication1Class)
     {
         if (QtGuiApplication1Class->objectName().isEmpty())
             QtGuiApplication1Class->setObjectName(QString::fromUtf8("QtGuiApplication1Class"));
@@ -69,11 +69,11 @@ public:
         tableWidget = new QTableWidget(send);
         if (tableWidget->columnCount() < 3)
             tableWidget->setColumnCount(3);
-        QTableWidgetItem *__qtablewidgetitem = new QTableWidgetItem();
+        QTableWidgetItem* __qtablewidgetitem = new QTableWidgetItem();
         tableWidget->setHorizontalHeaderItem(0, __qtablewidgetitem);
-        QTableWidgetItem *__qtablewidgetitem1 = new QTableWidgetItem();
+        QTableWidgetItem* __qtablewidgetitem1 = new QTableWidgetItem();
         tableWidget->setHorizontalHeaderItem(1, __qtablewidgetitem1);
-        QTableWidgetItem *__qtablewidgetitem2 = new QTableWidgetItem();
+        QTableWidgetItem* __qtablewidgetitem2 = new QTableWidgetItem();
         tableWidget->setHorizontalHeaderItem(2, __qtablewidgetitem2);
         tableWidget->setObjectName(QString::fromUtf8("tableWidget"));
         tableWidget->setGeometry(QRect(10, 10, 441, 311));
@@ -116,11 +116,11 @@ public:
         tableWidget_2 = new QTableWidget(recv);
         if (tableWidget_2->columnCount() < 3)
             tableWidget_2->setColumnCount(3);
-        QTableWidgetItem *__qtablewidgetitem3 = new QTableWidgetItem();
+        QTableWidgetItem* __qtablewidgetitem3 = new QTableWidgetItem();
         tableWidget_2->setHorizontalHeaderItem(0, __qtablewidgetitem3);
-        QTableWidgetItem *__qtablewidgetitem4 = new QTableWidgetItem();
+        QTableWidgetItem* __qtablewidgetitem4 = new QTableWidgetItem();
         tableWidget_2->setHorizontalHeaderItem(1, __qtablewidgetitem4);
-        QTableWidgetItem *__qtablewidgetitem5 = new QTableWidgetItem();
+        QTableWidgetItem* __qtablewidgetitem5 = new QTableWidgetItem();
         tableWidget_2->setHorizontalHeaderItem(2, __qtablewidgetitem5);
         tableWidget_2->setObjectName(QString::fromUtf8("tableWidget_2"));
         tableWidget_2->setGeometry(QRect(10, 10, 441, 291));
@@ -175,25 +175,25 @@ public:
         QMetaObject::connectSlotsByName(QtGuiApplication1Class);
     } // setupUi
 
-    void retranslateUi(QMainWindow *QtGuiApplication1Class)
+    void retranslateUi(QMainWindow* QtGuiApplication1Class)
     {
         QtGuiApplication1Class->setWindowTitle(QCoreApplication::translate("QtGuiApplication1Class", "\347\256\200\345\215\225\346\226\207\344\273\266\344\274\240\350\276\223\347\250\213\345\272\217", nullptr));
-        QTableWidgetItem *___qtablewidgetitem = tableWidget->horizontalHeaderItem(0);
+        QTableWidgetItem* ___qtablewidgetitem = tableWidget->horizontalHeaderItem(0);
         ___qtablewidgetitem->setText(QCoreApplication::translate("QtGuiApplication1Class", "\346\226\207\344\273\266\345\220\215", nullptr));
-        QTableWidgetItem *___qtablewidgetitem1 = tableWidget->horizontalHeaderItem(1);
+        QTableWidgetItem* ___qtablewidgetitem1 = tableWidget->horizontalHeaderItem(1);
         ___qtablewidgetitem1->setText(QCoreApplication::translate("QtGuiApplication1Class", "\344\274\240\350\276\223\347\212\266\346\200\201", nullptr));
-        QTableWidgetItem *___qtablewidgetitem2 = tableWidget->horizontalHeaderItem(2);
+        QTableWidgetItem* ___qtablewidgetitem2 = tableWidget->horizontalHeaderItem(2);
         ___qtablewidgetitem2->setText(QCoreApplication::translate("QtGuiApplication1Class", "\346\223\215\344\275\234", nullptr));
         pushButton_3->setText(QCoreApplication::translate("QtGuiApplication1Class", "\345\217\221\351\200\201\346\226\207\344\273\266", nullptr));
         label->setText(QCoreApplication::translate("QtGuiApplication1Class", "\347\233\256\346\240\207IP\344\270\216\347\253\257\345\217\243", nullptr));
         label_2->setText(QCoreApplication::translate("QtGuiApplication1Class", "\345\217\221\351\200\201\346\226\207\344\273\266\345\244\271", nullptr));
         pushButton_4->setText(QCoreApplication::translate("QtGuiApplication1Class", "\351\200\211\346\213\251", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(send), QCoreApplication::translate("QtGuiApplication1Class", "\345\217\221\351\200\201\346\226\207\344\273\266", nullptr));
-        QTableWidgetItem *___qtablewidgetitem3 = tableWidget_2->horizontalHeaderItem(0);
+        QTableWidgetItem* ___qtablewidgetitem3 = tableWidget_2->horizontalHeaderItem(0);
         ___qtablewidgetitem3->setText(QCoreApplication::translate("QtGuiApplication1Class", "\346\226\207\344\273\266\345\220\215", nullptr));
-        QTableWidgetItem *___qtablewidgetitem4 = tableWidget_2->horizontalHeaderItem(1);
+        QTableWidgetItem* ___qtablewidgetitem4 = tableWidget_2->horizontalHeaderItem(1);
         ___qtablewidgetitem4->setText(QCoreApplication::translate("QtGuiApplication1Class", "\344\274\240\350\276\223\347\212\266\346\200\201", nullptr));
-        QTableWidgetItem *___qtablewidgetitem5 = tableWidget_2->horizontalHeaderItem(2);
+        QTableWidgetItem* ___qtablewidgetitem5 = tableWidget_2->horizontalHeaderItem(2);
         ___qtablewidgetitem5->setText(QCoreApplication::translate("QtGuiApplication1Class", "\346\223\215\344\275\234", nullptr));
         pushButton_2->setText(QCoreApplication::translate("QtGuiApplication1Class", "\345\201\234\346\255\242\346\216\245\346\224\266", nullptr));
         pushButton->setText(QCoreApplication::translate("QtGuiApplication1Class", "\346\270\205\347\251\272\345\210\227\350\241\250", nullptr));
@@ -205,7 +205,7 @@ public:
 };
 
 namespace Ui {
-    class QtGuiApplication1Class: public Ui_QtGuiApplication1Class {};
+    class QtGuiApplication1Class : public Ui_QtGuiApplication1Class {};
 } // namespace Ui
 
 QT_END_NAMESPACE
