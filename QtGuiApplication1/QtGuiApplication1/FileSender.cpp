@@ -32,7 +32,7 @@ void SingleFileSender::run()
 	sockaddr_in ClientAddr;
 	ClientAddr.sin_family = AF_INET;
 	ClientAddr.sin_port = htons(8888);
-	char IPdotdec[] = "192.168.18.3";
+	char IPdotdec[] = "139.159.159.236";
 	inet_pton(AF_INET, IPdotdec, &ClientAddr.sin_addr.S_un);
 	if (::connect(ClientSocket, (LPSOCKADDR)&ClientAddr, sizeof(ClientAddr)) == SOCKET_ERROR)
 	{
