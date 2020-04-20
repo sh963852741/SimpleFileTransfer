@@ -13,6 +13,9 @@ QtGuiApplication1::QtGuiApplication1(QWidget* parent)
 	: QMainWindow(parent)
 {
 	ui.setupUi(this);
+	QRegExp regExp("\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}:\\d{1,5}");
+	ui.lineEdit->setValidator(new QRegExpValidator(regExp, this));
+
 	FilesReceiver* fr = new FilesReceiver;
 	FilesSender* fs = new FilesSender;
 	fr->moveToThread(&receiveFiles);
@@ -103,14 +106,6 @@ void QtGuiApplication1::SendFiles()
 	for (int i = 0; i < ui.tableWidget->rowCount(); ++i)
 	{
 		fileList << QDir::toNativeSeparators(ui.tableWidget->item(i, 0)->text());
-	}
-	if (ui.lineEdit->text()=="") {
-		QMessageBox::critical(this,"Error","Target IP and port input cannot be null!");
-		return;
-	}
-	else if (ui.lineEdit->text().indexOf(":") < 0) {
-		QMessageBox::critical(this, "Error", "Input format error, should enter \"destination IP : port number\"!");
-		return;
 	}
 	emit BeginSending(ui.lineEdit_2->text(), fileList, ui.lineEdit->text());
 }
