@@ -39,6 +39,9 @@ void SingleFileSender::run()
 =======
 	ClientAddr.sin_port = htons(8888);
 	char IPdotdec[] = "192.168.18.3";
+<<<<<<< HEAD
+>>>>>>> parent of 471031b... 更新
+=======
 >>>>>>> parent of 471031b... 更新
 	inet_pton(AF_INET, IPdotdec, &ClientAddr.sin_addr.S_un);
 	if (::connect(ClientSocket, (LPSOCKADDR)&ClientAddr, sizeof(ClientAddr)) == SOCKET_ERROR)
