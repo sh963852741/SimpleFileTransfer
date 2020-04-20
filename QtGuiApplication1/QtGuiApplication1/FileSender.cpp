@@ -1,4 +1,4 @@
-#include "FileSender.h"
+﻿#include "FileSender.h"
 #include "md5.h"
 #include <fstream>
 using namespace std;
@@ -33,16 +33,8 @@ void SingleFileSender::run()
 	if (ClientSocket == INVALID_SOCKET)return;
 	sockaddr_in ClientAddr;
 	ClientAddr.sin_family = AF_INET;
-<<<<<<< HEAD
 	ClientAddr.sin_port = htons(atoi(port.c_str()));
 	const char* IPdotdec = ipAddress.c_str();
-=======
-	ClientAddr.sin_port = htons(8888);
-	char IPdotdec[] = "192.168.18.3";
-<<<<<<< HEAD
->>>>>>> parent of 471031b... 更新
-=======
->>>>>>> parent of 471031b... 更新
 	inet_pton(AF_INET, IPdotdec, &ClientAddr.sin_addr.S_un);
 	if (::connect(ClientSocket, (LPSOCKADDR)&ClientAddr, sizeof(ClientAddr)) == SOCKET_ERROR)
 	{
@@ -59,7 +51,6 @@ void SingleFileSender::run()
 	int CheckSend;
 	unsigned char buffer[1024];
 
-	/*��֪��������ʼ�ϴ��ļ�*/
 	unsigned int x = 3, beginPosition = 0;
 	memset(buffer, 0, 1024);
 	memcpy_s(&buffer[0], 4, &x, 4);
@@ -69,7 +60,6 @@ void SingleFileSender::run()
 	const char* SendLength = (char*)buffer;
 	CheckSend = send(ClientSocket, SendLength, 1024, 0);
 
-	/*�ƶ��ļ�ָ��*/
 	int l = recv(ClientSocket, (char*)&beginPosition, 4, 0);
 	fp.seekg(beginPosition, ios::beg);
 
@@ -83,7 +73,7 @@ void SingleFileSender::run()
 		{
 			closesocket(ClientSocket);
 			WSACleanup();
-			emit complete(seqID, false, "����ʧ��");
+			emit complete(seqID, false, "发送失败");
 			return;
 		}
 	}
@@ -91,7 +81,7 @@ void SingleFileSender::run()
 	CheckSend = recv(ClientSocket, (char*)buffer, 33, 0);
 	if (CheckSend == SOCKET_ERROR || CheckSend == 0)
 	{
-		emit complete(seqID, false, "����ʧ��");
+		emit complete(seqID, false, "发送失败");
 	}
 	else
 	{
@@ -102,7 +92,7 @@ void SingleFileSender::run()
 		{
 			char msg[] = "md5 check error";
 			send(ClientSocket, msg, 16, 0);
-			emit complete(seqID, false, "��֤ʧ��");
+			emit complete(seqID, false, "发送失败");
 			return;
 		}
 		else
@@ -124,14 +114,13 @@ void FilesSender::StopSending()
 
 void FilesSender::process_begin(unsigned short id)
 {
-	emit rpt_process(id, QString::fromLocal8Bit("��ʼ����"));
+	emit rpt_process(id, QString::fromLocal8Bit("开始传输"));
 }
 void FilesSender::process_process(unsigned short id, int value)
 {
-	emit rpt_process(id, QString::fromLocal8Bit("������"));
+	emit rpt_process(id, QString::fromLocal8Bit("正在传输"));
 }
 void FilesSender::process_complete(unsigned short id, bool success, QString msg)
 {
-	emit rpt_process(id, QString::fromLocal8Bit(success ? "�������" : "����ʧ��"));
+	emit rpt_process(id, QString::fromLocal8Bit(success ? "传输完成" : "传输失败"));
 }
-
