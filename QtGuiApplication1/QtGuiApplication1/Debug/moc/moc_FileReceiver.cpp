@@ -144,8 +144,8 @@ void Listener::IncommingFile(SOCKET _t1)
     QMetaObject::activate(this, &staticMetaObject, 0, _a);
 }
 struct qt_meta_stringdata_FilesReceiver_t {
-    QByteArrayData data[18];
-    char stringdata0[205];
+    QByteArrayData data[19];
+    char stringdata0[220];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -171,7 +171,8 @@ QT_MOC_LITERAL(13, 153, 6), // "SOCKET"
 QT_MOC_LITERAL(14, 160, 6), // "socket"
 QT_MOC_LITERAL(15, 167, 13), // "StopReceiving"
 QT_MOC_LITERAL(16, 181, 16), // "updateRecvFloder"
-QT_MOC_LITERAL(17, 198, 6) // "floder"
+QT_MOC_LITERAL(17, 198, 6), // "floder"
+QT_MOC_LITERAL(18, 205, 14) // "BeginReceiving"
 
     },
     "FilesReceiver\0BeginRecvSingleFile\0\0"
@@ -179,7 +180,8 @@ QT_MOC_LITERAL(17, 198, 6) // "floder"
     "BeginListening\0StopListening\0"
     "process_Finished\0success\0process_Begin\0"
     "ReceiveSingleFile\0SOCKET\0socket\0"
-    "StopReceiving\0updateRecvFloder\0floder"
+    "StopReceiving\0updateRecvFloder\0floder\0"
+    "BeginReceiving"
 };
 #undef QT_MOC_LITERAL
 
@@ -189,7 +191,7 @@ static const uint qt_meta_data_FilesReceiver[] = {
        8,       // revision
        0,       // classname
        0,    0, // classinfo
-       9,   14, // methods
+      10,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -197,17 +199,18 @@ static const uint qt_meta_data_FilesReceiver[] = {
        2,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    1,   59,    2, 0x06 /* Public */,
-       4,    2,   62,    2, 0x06 /* Public */,
+       1,    1,   64,    2, 0x06 /* Public */,
+       4,    2,   67,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-       7,    0,   67,    2, 0x0a /* Public */,
-       8,    0,   68,    2, 0x0a /* Public */,
-       9,    3,   69,    2, 0x0a /* Public */,
-      11,    1,   76,    2, 0x0a /* Public */,
-      12,    1,   79,    2, 0x0a /* Public */,
-      15,    0,   82,    2, 0x0a /* Public */,
-      16,    1,   83,    2, 0x0a /* Public */,
+       7,    0,   72,    2, 0x0a /* Public */,
+       8,    0,   73,    2, 0x0a /* Public */,
+       9,    3,   74,    2, 0x0a /* Public */,
+      11,    1,   81,    2, 0x0a /* Public */,
+      12,    1,   84,    2, 0x0a /* Public */,
+      15,    0,   87,    2, 0x0a /* Public */,
+      16,    1,   88,    2, 0x0a /* Public */,
+      18,    0,   91,    2, 0x0a /* Public */,
 
  // signals: parameters
     QMetaType::Void, QMetaType::QString,    3,
@@ -221,6 +224,7 @@ static const uint qt_meta_data_FilesReceiver[] = {
     QMetaType::Void, 0x80000000 | 13,   14,
     QMetaType::Void,
     QMetaType::Void, QMetaType::QString,   17,
+    QMetaType::Void,
 
        0        // eod
 };
@@ -240,6 +244,7 @@ void FilesReceiver::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _i
         case 6: _t->ReceiveSingleFile((*reinterpret_cast< SOCKET(*)>(_a[1]))); break;
         case 7: _t->StopReceiving(); break;
         case 8: _t->updateRecvFloder((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 9: _t->BeginReceiving(); break;
         default: ;
         }
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
@@ -301,13 +306,13 @@ int FilesReceiver::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 9)
+        if (_id < 10)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 9;
+        _id -= 10;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 9)
+        if (_id < 10)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 9;
+        _id -= 10;
     }
     return _id;
 }

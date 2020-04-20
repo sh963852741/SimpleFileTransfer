@@ -23,7 +23,9 @@ QtGuiApplication1::QtGuiApplication1(QWidget* parent)
 	fs->moveToThread(&sendFiles);
 
 	connect(ui.pushButton, &QPushButton::clicked, this, &QtGuiApplication1::clearRecvTable);
-	connect(ui.pushButton_2, &QPushButton::clicked, fr, &FilesReceiver::StopReceiving);
+	connect(ui.pushButton_2, &QPushButton::clicked, this, &QtGuiApplication1::ChangeRecvState);
+	connect(this, &QtGuiApplication1::StopRecv, fr, &FilesReceiver::StopReceiving);
+	connect(this, &QtGuiApplication1::BeginRecv, fr, &FilesReceiver::BeginReceiving);
 	//connect(ui.pushButton_2, &QPushButton::clicked, fr, &FilesReceiver::StopListening);
 	connect(ui.pushButton_3, &QPushButton::clicked, this, &QtGuiApplication1::SendFiles);
 	connect(this, &QtGuiApplication1::BeginSending, fs, &FilesSender::BeginSending);
@@ -128,9 +130,19 @@ void QtGuiApplication1::clearRecvTable()
 	ui.tableWidget_2->clear();
 }
 
-void QtGuiApplication1::StopReceiving()
+void QtGuiApplication1::ChangeRecvState()
 {
-
+	if (recvState)
+	{
+		emit StopRecv();
+		ui.pushButton_2->setText(QString::fromLocal8Bit("开始接收"));
+	}
+	else
+	{
+		emit BeginRecv();
+		ui.pushButton_2->setText(QString::fromLocal8Bit("停止接收"));
+	}
+	recvState = !recvState;
 }
 
 void QtGuiApplication1::InputIP()
