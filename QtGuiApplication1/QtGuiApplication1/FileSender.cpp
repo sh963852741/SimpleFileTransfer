@@ -33,8 +33,13 @@ void SingleFileSender::run()
 	if (ClientSocket == INVALID_SOCKET)return;
 	sockaddr_in ClientAddr;
 	ClientAddr.sin_family = AF_INET;
+<<<<<<< HEAD
 	ClientAddr.sin_port = htons(atoi(port.c_str()));
 	const char* IPdotdec = ipAddress.c_str();
+=======
+	ClientAddr.sin_port = htons(8888);
+	char IPdotdec[] = "192.168.18.3";
+>>>>>>> parent of 471031b... 更新
 	inet_pton(AF_INET, IPdotdec, &ClientAddr.sin_addr.S_un);
 	if (::connect(ClientSocket, (LPSOCKADDR)&ClientAddr, sizeof(ClientAddr)) == SOCKET_ERROR)
 	{
