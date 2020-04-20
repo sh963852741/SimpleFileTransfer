@@ -49,4 +49,4 @@ private:
 	enum { BUFFER_SIZE = 1024 };
 };
 
-#endif /*MD5_H*/
+#endif /*MD5_H*/#pragma once
