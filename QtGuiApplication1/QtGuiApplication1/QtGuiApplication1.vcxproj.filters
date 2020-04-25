@@ -40,6 +40,9 @@
     <ClCompile Include="FileSender.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="compre.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="QtGuiApplication1.h">
@@ -64,6 +67,18 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="md5.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="unistd.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="zconf.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="compre.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

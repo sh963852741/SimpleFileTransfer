@@ -1,5 +1,6 @@
 ﻿#include "FileSender.h"
 #include "md5.h"
+#include"compre.h"
 #include <fstream>
 using namespace std;
 
@@ -10,9 +11,11 @@ void FilesSender::BeginSending(QString basepath, QStringList filename,QString IP
 	{
 		SingleFileSender* fs = new SingleFileSender;
 		fs->seqID = i;
+		fs->iscompress = iscompress;
 		fs->setAutoDelete(true);
 		connect(fs, &SingleFileSender::begin, this, &FilesSender::process_begin);
 		connect(fs, &SingleFileSender::complete, this, &FilesSender::process_complete);
+		connect(fs, &SingleFileSender::compressing, this, &FilesSender::process_compress);
 		fs->ipAddress = IPaddress.mid(0, IPaddress.indexOf(":")).toLocal8Bit();
 		fs->port = IPaddress.mid(IPaddress.indexOf(":")+1).toLocal8Bit();
 		fs->floderName = basepath.toLocal8Bit();
@@ -23,7 +26,7 @@ void FilesSender::BeginSending(QString basepath, QStringList filename,QString IP
 
 void SingleFileSender::run()
 {
-	emit begin(seqID);
+	//emit begin(seqID);
 	const int RecDataSize = 255;
 	WORD SockVersion = MAKEWORD(2, 2);
 	WSADATA WsaData;
@@ -33,8 +36,10 @@ void SingleFileSender::run()
 	if (ClientSocket == INVALID_SOCKET)return;
 	sockaddr_in ClientAddr;
 	ClientAddr.sin_family = AF_INET;
-	ClientAddr.sin_port = htons(atoi(port.c_str()));
-	const char* IPdotdec = ipAddress.c_str();
+	ClientAddr.sin_port = htons(8888);
+	//ClientAddr.sin_port = htons(atoi(port.c_str()));
+	//const char* IPdotdec = ipAddress.c_str();
+	char IPdotdec[] = "127.0.0.1";
 	inet_pton(AF_INET, IPdotdec, &ClientAddr.sin_addr.S_un);
 	if (::connect(ClientSocket, (LPSOCKADDR)&ClientAddr, sizeof(ClientAddr)) == SOCKET_ERROR)
 	{
@@ -42,16 +47,29 @@ void SingleFileSender::run()
 		WSACleanup();
 		return;
 	}
+	string tempfile;
 	ifstream fp;
-	fp.open(floderName + fileName, ios::binary);
+	if (iscompress)
+	{
+		string fullname = floderName + fileName;
+		tempfile = fullname;
+		tempfile.replace(tempfile.begin() + tempfile.find_last_of('.'), tempfile.end(), ".tmp");
+		emit compressing(seqID);
+		def(fullname, tempfile, Z_DEFAULT_COMPRESSION);
+		fp.open(tempfile, ios::binary);
+	}
+	else
+		fp.open(floderName + fileName, ios::binary);
+	emit begin(seqID);
 	fp.seekg(0, ios::end);
 	unsigned int fileSize = fp.tellg();
-
 
 	int CheckSend;
 	unsigned char buffer[1024];
 
 	unsigned int x = 3, beginPosition = 0;
+	if (iscompress) x = 4;
+
 	memset(buffer, 0, 1024);
 	memcpy_s(&buffer[0], 4, &x, 4);
 	memcpy_s(&buffer[4], 4, &fileSize, 4);
@@ -103,6 +121,11 @@ void SingleFileSender::run()
 	}
 	closesocket(ClientSocket);
 	WSACleanup();
+	if (iscompress)
+	{
+		QString str = QString::fromLocal8Bit(tempfile.c_str());
+		QFile::remove(str);
+	}
 	emit complete(seqID, true, "");
 	return;
 }
@@ -110,6 +133,16 @@ void SingleFileSender::run()
 void FilesSender::StopSending()
 {
 
+}
+
+void FilesSender::setcompress(bool a)
+{
+	iscompress = a;
+}
+
+void FilesSender::process_compress(unsigned short id)
+{
+	emit rpt_process(id, QString::fromLocal8Bit("正在压缩"));
 }
 
 void FilesSender::process_begin(unsigned short id)

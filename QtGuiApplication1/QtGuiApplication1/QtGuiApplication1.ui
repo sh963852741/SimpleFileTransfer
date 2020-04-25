@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="send">
      <attribute name="title">
@@ -102,8 +102,8 @@
        <rect>
         <x>460</x>
         <y>10</y>
-        <width>143</width>
-        <height>51</height>
+        <width>177</width>
+        <height>61</height>
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout">
@@ -125,6 +125,19 @@
         <widget class="QLineEdit" name="lineEdit_2"/>
        </item>
       </layout>
+     </widget>
+     <widget class="QCheckBox" name="checkBox">
+      <property name="geometry">
+       <rect>
+        <x>460</x>
+        <y>190</y>
+        <width>91</width>
+        <height>19</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>压缩传送</string>
+      </property>
      </widget>
     </widget>
     <widget class="QWidget" name="recv">
@@ -187,8 +200,8 @@
        <rect>
         <x>460</x>
         <y>10</y>
-        <width>143</width>
-        <height>51</height>
+        <width>177</width>
+        <height>61</height>
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout_2">
@@ -220,7 +233,7 @@
      <x>0</x>
      <y>0</y>
      <width>610</width>
-     <height>23</height>
+     <height>26</height>
     </rect>
    </property>
   </widget>

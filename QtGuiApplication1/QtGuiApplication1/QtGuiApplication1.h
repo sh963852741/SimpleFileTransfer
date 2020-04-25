@@ -32,9 +32,11 @@ public slots:
 	void selectRecvFloder();
 	void clearRecvTable();
 	void InputIP();
+	void compress();
 signals:
 	void BeginSending(QString basepath, QStringList filename, QString IPaddress);
 	void updateRecvFloder(QString floder);
+	void ifcompress(bool compre);
 	void StopRecv();
 	void BeginRecv();
 };

@@ -22,6 +22,8 @@ QtGuiApplication1::QtGuiApplication1(QWidget* parent)
 	fr->BeginListening();
 	fs->moveToThread(&sendFiles);
 
+	connect(ui.checkBox, &QCheckBox::clicked, this, &QtGuiApplication1::compress);
+	connect(this, &QtGuiApplication1::ifcompress, fs, &FilesSender::setcompress);
 	connect(ui.pushButton, &QPushButton::clicked, this, &QtGuiApplication1::clearRecvTable);
 	connect(ui.pushButton_2, &QPushButton::clicked, this, &QtGuiApplication1::ChangeRecvState);
 	connect(this, &QtGuiApplication1::StopRecv, fr, &FilesReceiver::StopReceiving);
@@ -36,6 +38,7 @@ QtGuiApplication1::QtGuiApplication1(QWidget* parent)
 	//connect(&receiveFiles, &QThread::started, this, &QtGuiApplication1::ShowMsg);
 	connect(fr, &FilesReceiver::BeginRecvSingleFile, this, &QtGuiApplication1::ShowRecvingMsg);
 	connect(fr, &FilesReceiver::ReceiveFinished, this, &QtGuiApplication1::ShowRecvingMsgById);
+	compress();
 	sendFiles.start();
 	receiveFiles.start();
 }
@@ -145,8 +148,21 @@ void QtGuiApplication1::ChangeRecvState()
 	recvState = !recvState;
 }
 
+
+
 void QtGuiApplication1::InputIP()
 {
 	//ui.lineEdit->
+}
+
+void QtGuiApplication1::compress()
+{
+	if (ui.checkBox->isChecked())
+	{
+		emit ifcompress(true);
+	}
+	else
+		emit ifcompress(false);
+
 }
 
