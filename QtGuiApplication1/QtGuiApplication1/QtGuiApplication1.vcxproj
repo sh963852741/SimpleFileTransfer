@@ -80,6 +80,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="compre.cpp" />
     <ClCompile Include="FileReceiver.cpp" />
     <ClCompile Include="FileSender.cpp" />
     <ClCompile Include="main.cpp" />
@@ -102,7 +103,11 @@
     <QtMoc Include="FileSender.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="compre.h" />
     <ClInclude Include="md5.h" />
+    <ClInclude Include="unistd.h" />
+    <ClInclude Include="zconf.h" />
+    <ClInclude Include="zlib.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

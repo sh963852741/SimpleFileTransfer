@@ -1,4 +1,5 @@
 #include "FileReceiver.h"
+#include"compre.h"
 #include <direct.h>
 #include <io.h>
 bool SingleFileReceiver::stop = false;
@@ -8,18 +9,34 @@ void SingleFileReceiver::run()
 	ofstream fileWriter;
 
 	int rev = recv(socket, (char*)RevData, 1024, 0);
+	for (int i = 0; i < 1024; i++)
+	{
+		RevData[i] += 3;
+	}
 	if (rev > 0)
 	{
+		int iscompress;
 		unsigned int fileLength;
 		string fileName = (char*)&RevData[12];
 		string fullPath = saveFlod + fileName;
 		emit begin(QString::fromLocal8Bit(fullPath.c_str()));
 		string tempfile = fullPath;
 		tempfile.replace(tempfile.begin() + tempfile.find_last_of('.'), tempfile.end(), ".tmp");
-		memcpy_s(&fileLength, 4, &RevData[4], 4);
 
+		string comprefile = fullPath;
+		comprefile.replace(comprefile.begin() + comprefile.find_last_of('.'), comprefile.end(), "Compre.tmp");
+		
+		memcpy_s(&iscompress, 4, &RevData[0], 4);
+		memcpy_s(&fileLength, 4, &RevData[4], 4);
 		unsigned int requestPosition;
+
+		if (iscompress == 4)
+		{
+			fullPath = comprefile;
+		}
+
 		fileWriter.open(fullPath, ios::_Nocreate | ios::binary);
+
 
 		/*先判断文件是否需要断点续传*/
 		if (fileWriter.is_open()) // 如果文件已经下载
@@ -59,7 +76,10 @@ void SingleFileReceiver::run()
 		for (unsigned int i = requestPosition; i < fileLength;)
 		{
 			rev = recv(socket, (char*)RevData, 1024, 0);
-
+			for (int i = 0; i < 1024; i++)
+			{
+				RevData[i] += 3;
+			}
 			/* 如果传输中断 */
 			if (stop || rev == SOCKET_ERROR || rev == 0)
 			{
@@ -75,11 +95,17 @@ void SingleFileReceiver::run()
 			}
 
 			i += rev;
-			fileWriter.write((char*)RevData, rev);
+			//fileWriter.write((char*)RevData, rev);
 		}
 		fileWriter.close();
+		if (iscompress == 4)
+		{
+			inf(fullPath, saveFlod + fileName);
+			QString str = QString::fromLocal8Bit(fullPath.c_str());
+			QFile::remove(str);
+		}
 		MD5 md5;
-		md5.update(ifstream(fullPath));
+		md5.update(ifstream(saveFlod+fileName));
 		string msg = md5.toString();
 		send(socket, msg.c_str(), 33, 0);
 		rev = recv(socket, (char*)RevData, 16, 0);
