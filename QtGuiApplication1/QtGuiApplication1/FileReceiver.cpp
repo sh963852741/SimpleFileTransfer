@@ -9,6 +9,10 @@ void SingleFileReceiver::run()
 	ofstream fileWriter;
 
 	int rev = recv(socket, (char*)RevData, 1024, 0);
+	for (int i = 0; i < 1024; i++)
+	{
+		RevData[i] += 3;
+	}
 	if (rev > 0)
 	{
 		int iscompress;
@@ -72,7 +76,10 @@ void SingleFileReceiver::run()
 		for (unsigned int i = requestPosition; i < fileLength;)
 		{
 			rev = recv(socket, (char*)RevData, 1024, 0);
-
+			for (int i = 0; i < 1024; i++)
+			{
+				RevData[i] += 3;
+			}
 			/* 如果传输中断 */
 			if (stop || rev == SOCKET_ERROR || rev == 0)
 			{
@@ -88,7 +95,7 @@ void SingleFileReceiver::run()
 			}
 
 			i += rev;
-			fileWriter.write((char*)RevData, rev);
+			//fileWriter.write((char*)RevData, rev);
 		}
 		fileWriter.close();
 		if (iscompress == 4)

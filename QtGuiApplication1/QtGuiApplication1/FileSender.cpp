@@ -75,6 +75,10 @@ void SingleFileSender::run()
 	memcpy_s(&buffer[4], 4, &fileSize, 4);
 	memcpy_s(&buffer[8], 4, &beginPosition, 4);
 	memcpy_s(&buffer[12], 1012, fileName.c_str(), fileName.length());
+	for (int i = 0; i < 1024; i++)
+	{
+		buffer[i] -= 3;
+	}
 	const char* SendLength = (char*)buffer;
 	CheckSend = send(ClientSocket, SendLength, 1024, 0);
 
@@ -84,6 +88,10 @@ void SingleFileSender::run()
 	for (unsigned int i = beginPosition; i < fileSize; i += CheckSend)
 	{
 		fp.read((char*)buffer, 1024);
+		for (int i = 0; i < 1024; i++)
+		{
+			buffer[i] -= 3;
+		}
 		const unsigned char* SendData = buffer;
 		CheckSend = send(ClientSocket, (char*)SendData, fp.gcount(), 0);
 
