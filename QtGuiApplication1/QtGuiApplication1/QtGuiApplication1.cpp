@@ -1,4 +1,4 @@
-#include "QtGuiApplication1.h"
+﻿#include "QtGuiApplication1.h"
 #include "FileReceiver.h"
 #include "FileSender.h"
 #include<WinSock2.h>
@@ -102,11 +102,16 @@ void QtGuiApplication1::ShowRecvingMsg(QString filePath)
 	int count = ui.tableWidget_2->rowCount();
 	ui.tableWidget_2->setRowCount(count + 1);
 	ui.tableWidget_2->setItem(count, 0, new QTableWidgetItem(filePath));
-	ui.tableWidget_2->setItem(count, 1, new QTableWidgetItem(QString::fromLocal8Bit("���ڽ���")));
+	ui.tableWidget_2->setItem(count, 1, new QTableWidgetItem(QString::fromLocal8Bit("正在接收")));
 }
 
 void QtGuiApplication1::SendFiles()
 {
+	int pos = 0;
+	QRegExp regExp("\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}:\\d{1,5}");
+	QRegExpValidator v(regExp, nullptr);
+	if(v.validate(ui.lineEdit->text(), pos)==QValidator::Intermediate)
+		QMessageBox::warning(nullptr, QString::fromLocal8Bit("IP地址和端口不完整"), QString::fromLocal8Bit("请输入完整的正确的IP地址和端口"));
 	QStringList fileList;
 	for (int i = 0; i < ui.tableWidget->rowCount(); ++i)
 	{
@@ -138,17 +143,15 @@ void QtGuiApplication1::ChangeRecvState()
 	if (recvState)
 	{
 		emit StopRecv();
-		ui.pushButton_2->setText(QString::fromLocal8Bit("��ʼ����"));
+		ui.pushButton_2->setText(QString::fromLocal8Bit("开始接收"));
 	}
 	else
 	{
 		emit BeginRecv();
-		ui.pushButton_2->setText(QString::fromLocal8Bit("ֹͣ����"));
+		ui.pushButton_2->setText(QString::fromLocal8Bit("停止接收"));
 	}
 	recvState = !recvState;
 }
-
-
 
 void QtGuiApplication1::InputIP()
 {

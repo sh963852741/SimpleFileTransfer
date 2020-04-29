@@ -11,6 +11,7 @@
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QCheckBox>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
@@ -41,6 +42,7 @@ public:
     QLabel *label_2;
     QPushButton *pushButton_4;
     QLineEdit *lineEdit_2;
+    QCheckBox *checkBox;
     QWidget *recv;
     QTableWidget *tableWidget_2;
     QPushButton *pushButton_2;
@@ -89,7 +91,7 @@ public:
         label->setGeometry(QRect(460, 142, 72, 16));
         layoutWidget = new QWidget(send);
         layoutWidget->setObjectName(QString::fromUtf8("layoutWidget"));
-        layoutWidget->setGeometry(QRect(460, 10, 143, 51));
+        layoutWidget->setGeometry(QRect(460, 10, 177, 61));
         gridLayout = new QGridLayout(layoutWidget);
         gridLayout->setSpacing(6);
         gridLayout->setContentsMargins(11, 11, 11, 11);
@@ -110,6 +112,9 @@ public:
 
         gridLayout->addWidget(lineEdit_2, 1, 0, 1, 2);
 
+        checkBox = new QCheckBox(send);
+        checkBox->setObjectName(QString::fromUtf8("checkBox"));
+        checkBox->setGeometry(QRect(460, 190, 91, 19));
         tabWidget->addTab(send, QString());
         recv = new QWidget();
         recv->setObjectName(QString::fromUtf8("recv"));
@@ -132,7 +137,7 @@ public:
         pushButton->setGeometry(QRect(460, 250, 131, 23));
         layoutWidget_2 = new QWidget(recv);
         layoutWidget_2->setObjectName(QString::fromUtf8("layoutWidget_2"));
-        layoutWidget_2->setGeometry(QRect(460, 10, 143, 51));
+        layoutWidget_2->setGeometry(QRect(460, 10, 177, 61));
         gridLayout_2 = new QGridLayout(layoutWidget_2);
         gridLayout_2->setSpacing(6);
         gridLayout_2->setContentsMargins(11, 11, 11, 11);
@@ -157,7 +162,7 @@ public:
         QtGuiApplication1Class->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(QtGuiApplication1Class);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 610, 23));
+        menuBar->setGeometry(QRect(0, 0, 610, 26));
         QtGuiApplication1Class->setMenuBar(menuBar);
         mainToolBar = new QToolBar(QtGuiApplication1Class);
         mainToolBar->setObjectName(QString::fromUtf8("mainToolBar"));
@@ -168,7 +173,7 @@ public:
 
         retranslateUi(QtGuiApplication1Class);
 
-        tabWidget->setCurrentIndex(1);
+        tabWidget->setCurrentIndex(0);
         pushButton_3->setDefault(false);
 
 
@@ -188,6 +193,7 @@ public:
         label->setText(QCoreApplication::translate("QtGuiApplication1Class", "\347\233\256\346\240\207IP\344\270\216\347\253\257\345\217\243", nullptr));
         label_2->setText(QCoreApplication::translate("QtGuiApplication1Class", "\345\217\221\351\200\201\346\226\207\344\273\266\345\244\271", nullptr));
         pushButton_4->setText(QCoreApplication::translate("QtGuiApplication1Class", "\351\200\211\346\213\251", nullptr));
+        checkBox->setText(QCoreApplication::translate("QtGuiApplication1Class", "\345\216\213\347\274\251\344\274\240\351\200\201", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(send), QCoreApplication::translate("QtGuiApplication1Class", "\345\217\221\351\200\201\346\226\207\344\273\266", nullptr));
         QTableWidgetItem *___qtablewidgetitem3 = tableWidget_2->horizontalHeaderItem(0);
         ___qtablewidgetitem3->setText(QCoreApplication::translate("QtGuiApplication1Class", "\346\226\207\344\273\266\345\220\215", nullptr));
