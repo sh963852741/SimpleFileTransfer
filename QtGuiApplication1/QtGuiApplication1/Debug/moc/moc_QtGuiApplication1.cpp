@@ -22,8 +22,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_QtGuiApplication1_t {
-    QByteArrayData data[22];
-    char stringdata0[247];
+    QByteArrayData data[25];
+    char stringdata0[274];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -40,29 +40,33 @@ QT_MOC_LITERAL(4, 41, 8), // "filename"
 QT_MOC_LITERAL(5, 50, 9), // "IPaddress"
 QT_MOC_LITERAL(6, 60, 16), // "updateRecvFloder"
 QT_MOC_LITERAL(7, 77, 6), // "floder"
-QT_MOC_LITERAL(8, 84, 8), // "StopRecv"
-QT_MOC_LITERAL(9, 93, 9), // "BeginRecv"
-QT_MOC_LITERAL(10, 103, 15), // "ChangeRecvState"
-QT_MOC_LITERAL(11, 119, 12), // "showFileList"
-QT_MOC_LITERAL(12, 132, 14), // "ShowSendingMsg"
-QT_MOC_LITERAL(13, 147, 2), // "id"
-QT_MOC_LITERAL(14, 150, 3), // "msg"
-QT_MOC_LITERAL(15, 154, 14), // "ShowRecvingMsg"
-QT_MOC_LITERAL(16, 169, 8), // "filePath"
-QT_MOC_LITERAL(17, 178, 9), // "SendFiles"
-QT_MOC_LITERAL(18, 188, 18), // "ShowRecvingMsgById"
-QT_MOC_LITERAL(19, 207, 16), // "selectRecvFloder"
-QT_MOC_LITERAL(20, 224, 14), // "clearRecvTable"
-QT_MOC_LITERAL(21, 239, 7) // "InputIP"
+QT_MOC_LITERAL(8, 84, 10), // "ifcompress"
+QT_MOC_LITERAL(9, 95, 6), // "compre"
+QT_MOC_LITERAL(10, 102, 8), // "StopRecv"
+QT_MOC_LITERAL(11, 111, 9), // "BeginRecv"
+QT_MOC_LITERAL(12, 121, 15), // "ChangeRecvState"
+QT_MOC_LITERAL(13, 137, 12), // "showFileList"
+QT_MOC_LITERAL(14, 150, 14), // "ShowSendingMsg"
+QT_MOC_LITERAL(15, 165, 2), // "id"
+QT_MOC_LITERAL(16, 168, 3), // "msg"
+QT_MOC_LITERAL(17, 172, 14), // "ShowRecvingMsg"
+QT_MOC_LITERAL(18, 187, 8), // "filePath"
+QT_MOC_LITERAL(19, 196, 9), // "SendFiles"
+QT_MOC_LITERAL(20, 206, 18), // "ShowRecvingMsgById"
+QT_MOC_LITERAL(21, 225, 16), // "selectRecvFloder"
+QT_MOC_LITERAL(22, 242, 14), // "clearRecvTable"
+QT_MOC_LITERAL(23, 257, 7), // "InputIP"
+QT_MOC_LITERAL(24, 265, 8) // "compress"
 
     },
     "QtGuiApplication1\0BeginSending\0\0"
     "basepath\0filename\0IPaddress\0"
-    "updateRecvFloder\0floder\0StopRecv\0"
-    "BeginRecv\0ChangeRecvState\0showFileList\0"
-    "ShowSendingMsg\0id\0msg\0ShowRecvingMsg\0"
-    "filePath\0SendFiles\0ShowRecvingMsgById\0"
-    "selectRecvFloder\0clearRecvTable\0InputIP"
+    "updateRecvFloder\0floder\0ifcompress\0"
+    "compre\0StopRecv\0BeginRecv\0ChangeRecvState\0"
+    "showFileList\0ShowSendingMsg\0id\0msg\0"
+    "ShowRecvingMsg\0filePath\0SendFiles\0"
+    "ShowRecvingMsgById\0selectRecvFloder\0"
+    "clearRecvTable\0InputIP\0compress"
 };
 #undef QT_MOC_LITERAL
 
@@ -72,43 +76,47 @@ static const uint qt_meta_data_QtGuiApplication1[] = {
        8,       // revision
        0,       // classname
        0,    0, // classinfo
-      13,   14, // methods
+      15,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-       4,       // signalCount
+       5,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    3,   79,    2, 0x06 /* Public */,
-       6,    1,   86,    2, 0x06 /* Public */,
-       8,    0,   89,    2, 0x06 /* Public */,
-       9,    0,   90,    2, 0x06 /* Public */,
+       1,    3,   89,    2, 0x06 /* Public */,
+       6,    1,   96,    2, 0x06 /* Public */,
+       8,    1,   99,    2, 0x06 /* Public */,
+      10,    0,  102,    2, 0x06 /* Public */,
+      11,    0,  103,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-      10,    0,   91,    2, 0x0a /* Public */,
-      11,    0,   92,    2, 0x0a /* Public */,
-      12,    2,   93,    2, 0x0a /* Public */,
-      15,    1,   98,    2, 0x0a /* Public */,
-      17,    0,  101,    2, 0x0a /* Public */,
-      18,    2,  102,    2, 0x0a /* Public */,
-      19,    0,  107,    2, 0x0a /* Public */,
-      20,    0,  108,    2, 0x0a /* Public */,
-      21,    0,  109,    2, 0x0a /* Public */,
+      12,    0,  104,    2, 0x0a /* Public */,
+      13,    0,  105,    2, 0x0a /* Public */,
+      14,    2,  106,    2, 0x0a /* Public */,
+      17,    1,  111,    2, 0x0a /* Public */,
+      19,    0,  114,    2, 0x0a /* Public */,
+      20,    2,  115,    2, 0x0a /* Public */,
+      21,    0,  120,    2, 0x0a /* Public */,
+      22,    0,  121,    2, 0x0a /* Public */,
+      23,    0,  122,    2, 0x0a /* Public */,
+      24,    0,  123,    2, 0x0a /* Public */,
 
  // signals: parameters
     QMetaType::Void, QMetaType::QString, QMetaType::QStringList, QMetaType::QString,    3,    4,    5,
     QMetaType::Void, QMetaType::QString,    7,
+    QMetaType::Void, QMetaType::Bool,    9,
     QMetaType::Void,
     QMetaType::Void,
 
  // slots: parameters
     QMetaType::Void,
     QMetaType::Void,
-    QMetaType::Void, QMetaType::UShort, QMetaType::QString,   13,   14,
-    QMetaType::Void, QMetaType::QString,   16,
+    QMetaType::Void, QMetaType::UShort, QMetaType::QString,   15,   16,
+    QMetaType::Void, QMetaType::QString,   18,
     QMetaType::Void,
-    QMetaType::Void, QMetaType::UShort, QMetaType::QString,   13,   14,
+    QMetaType::Void, QMetaType::UShort, QMetaType::QString,   15,   16,
+    QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
@@ -124,17 +132,19 @@ void QtGuiApplication1::qt_static_metacall(QObject *_o, QMetaObject::Call _c, in
         switch (_id) {
         case 0: _t->BeginSending((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< QStringList(*)>(_a[2])),(*reinterpret_cast< QString(*)>(_a[3]))); break;
         case 1: _t->updateRecvFloder((*reinterpret_cast< QString(*)>(_a[1]))); break;
-        case 2: _t->StopRecv(); break;
-        case 3: _t->BeginRecv(); break;
-        case 4: _t->ChangeRecvState(); break;
-        case 5: _t->showFileList(); break;
-        case 6: _t->ShowSendingMsg((*reinterpret_cast< unsigned short(*)>(_a[1])),(*reinterpret_cast< QString(*)>(_a[2]))); break;
-        case 7: _t->ShowRecvingMsg((*reinterpret_cast< QString(*)>(_a[1]))); break;
-        case 8: _t->SendFiles(); break;
-        case 9: _t->ShowRecvingMsgById((*reinterpret_cast< unsigned short(*)>(_a[1])),(*reinterpret_cast< QString(*)>(_a[2]))); break;
-        case 10: _t->selectRecvFloder(); break;
-        case 11: _t->clearRecvTable(); break;
-        case 12: _t->InputIP(); break;
+        case 2: _t->ifcompress((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 3: _t->StopRecv(); break;
+        case 4: _t->BeginRecv(); break;
+        case 5: _t->ChangeRecvState(); break;
+        case 6: _t->showFileList(); break;
+        case 7: _t->ShowSendingMsg((*reinterpret_cast< unsigned short(*)>(_a[1])),(*reinterpret_cast< QString(*)>(_a[2]))); break;
+        case 8: _t->ShowRecvingMsg((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 9: _t->SendFiles(); break;
+        case 10: _t->ShowRecvingMsgById((*reinterpret_cast< unsigned short(*)>(_a[1])),(*reinterpret_cast< QString(*)>(_a[2]))); break;
+        case 11: _t->selectRecvFloder(); break;
+        case 12: _t->clearRecvTable(); break;
+        case 13: _t->InputIP(); break;
+        case 14: _t->compress(); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -154,16 +164,23 @@ void QtGuiApplication1::qt_static_metacall(QObject *_o, QMetaObject::Call _c, in
             }
         }
         {
-            using _t = void (QtGuiApplication1::*)();
-            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&QtGuiApplication1::StopRecv)) {
+            using _t = void (QtGuiApplication1::*)(bool );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&QtGuiApplication1::ifcompress)) {
                 *result = 2;
                 return;
             }
         }
         {
             using _t = void (QtGuiApplication1::*)();
-            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&QtGuiApplication1::BeginRecv)) {
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&QtGuiApplication1::StopRecv)) {
                 *result = 3;
+                return;
+            }
+        }
+        {
+            using _t = void (QtGuiApplication1::*)();
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&QtGuiApplication1::BeginRecv)) {
+                *result = 4;
                 return;
             }
         }
@@ -199,13 +216,13 @@ int QtGuiApplication1::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 13)
+        if (_id < 15)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 13;
+        _id -= 15;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 13)
+        if (_id < 15)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 13;
+        _id -= 15;
     }
     return _id;
 }
@@ -225,15 +242,22 @@ void QtGuiApplication1::updateRecvFloder(QString _t1)
 }
 
 // SIGNAL 2
-void QtGuiApplication1::StopRecv()
+void QtGuiApplication1::ifcompress(bool _t1)
 {
-    QMetaObject::activate(this, &staticMetaObject, 2, nullptr);
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
+    QMetaObject::activate(this, &staticMetaObject, 2, _a);
 }
 
 // SIGNAL 3
-void QtGuiApplication1::BeginRecv()
+void QtGuiApplication1::StopRecv()
 {
     QMetaObject::activate(this, &staticMetaObject, 3, nullptr);
+}
+
+// SIGNAL 4
+void QtGuiApplication1::BeginRecv()
+{
+    QMetaObject::activate(this, &staticMetaObject, 4, nullptr);
 }
 QT_WARNING_POP
 QT_END_MOC_NAMESPACE
