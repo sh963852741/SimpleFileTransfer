@@ -5,6 +5,7 @@
 #include <Qtcore/qthread.h>
 #include <Qtcore/QList>
 #include <QtWidgets/qfiledialog.h>
+#include <qdatetime.h>
 #include "md5.h"
 using namespace std;
 
@@ -26,10 +27,10 @@ public slots:
 	void ChangeRecvState();
 	void showFileList();
 	void ShowSendingMsg(unsigned short id, QString msg);
-	void ShowRecvingMsg(QString filePath);
+	void ShowRecvingMsg(QString filePath, QTime time);
 	void SendFiles();
 	void StartListening();
-	void ShowRecvingMsgById(unsigned short id, QString msg);
+	void ShowRecvingMsgById(unsigned short id, QString msg, QTime time);
 	void selectRecvFloder();
 	void clearRecvTable();
 	void InputIP();

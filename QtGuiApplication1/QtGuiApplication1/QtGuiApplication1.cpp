@@ -102,12 +102,13 @@ void QtGuiApplication1::ShowSendingMsg(unsigned short id, QString msg)
 	ui.tableWidget->setItem(id, 1, new QTableWidgetItem(msg));
 }
 
-void QtGuiApplication1::ShowRecvingMsg(QString filePath)
+void QtGuiApplication1::ShowRecvingMsg(QString filePath, QTime time)
 {
 	int count = ui.tableWidget_2->rowCount();
 	ui.tableWidget_2->setRowCount(count + 1);
 	ui.tableWidget_2->setItem(count, 0, new QTableWidgetItem(filePath));
 	ui.tableWidget_2->setItem(count, 1, new QTableWidgetItem(QString::fromLocal8Bit("正在接收")));
+	ui.tableWidget_2->setItem(count, 2, new QTableWidgetItem(time.toString("h:m:s")));
 }
 
 void QtGuiApplication1::SendFiles()
@@ -145,9 +146,10 @@ void QtGuiApplication1::StartListening()
 
 }
 
-void QtGuiApplication1::ShowRecvingMsgById(unsigned short id, QString msg)
+void QtGuiApplication1::ShowRecvingMsgById(unsigned short id, QString msg, QTime time)
 {
 	ui.tableWidget_2->setItem(id, 1, new QTableWidgetItem(msg));
+	ui.tableWidget_2->setItem(id, 3, new QTableWidgetItem(time.toString("h:m:s")));
 }
 
 void QtGuiApplication1::selectRecvFloder()
@@ -205,6 +207,3 @@ void QtGuiApplication1::encryption()
 
 
 }
-
-
-

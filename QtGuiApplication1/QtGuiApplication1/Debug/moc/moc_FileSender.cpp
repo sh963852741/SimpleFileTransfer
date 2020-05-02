@@ -22,8 +22,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_FilesSender_t {
-    QByteArrayData data[18];
-    char stringdata0[177];
+    QByteArrayData data[19];
+    char stringdata0[188];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -44,19 +44,21 @@ QT_MOC_LITERAL(8, 63, 9), // "IPaddress"
 QT_MOC_LITERAL(9, 73, 11), // "StopSending"
 QT_MOC_LITERAL(10, 85, 11), // "setcompress"
 QT_MOC_LITERAL(11, 97, 1), // "a"
-QT_MOC_LITERAL(12, 99, 16), // "process_compress"
-QT_MOC_LITERAL(13, 116, 13), // "process_begin"
-QT_MOC_LITERAL(14, 130, 15), // "process_process"
-QT_MOC_LITERAL(15, 146, 5), // "value"
-QT_MOC_LITERAL(16, 152, 16), // "process_complete"
-QT_MOC_LITERAL(17, 169, 7) // "success"
+QT_MOC_LITERAL(12, 99, 10), // "setencrypt"
+QT_MOC_LITERAL(13, 110, 16), // "process_compress"
+QT_MOC_LITERAL(14, 127, 13), // "process_begin"
+QT_MOC_LITERAL(15, 141, 15), // "process_process"
+QT_MOC_LITERAL(16, 157, 5), // "value"
+QT_MOC_LITERAL(17, 163, 16), // "process_complete"
+QT_MOC_LITERAL(18, 180, 7) // "success"
 
     },
     "FilesSender\0rpt_process\0\0id\0msg\0"
     "BeginSending\0basepath\0filename\0IPaddress\0"
-    "StopSending\0setcompress\0a\0process_compress\0"
-    "process_begin\0process_process\0value\0"
-    "process_complete\0success"
+    "StopSending\0setcompress\0a\0setencrypt\0"
+    "process_compress\0process_begin\0"
+    "process_process\0value\0process_complete\0"
+    "success"
 };
 #undef QT_MOC_LITERAL
 
@@ -66,7 +68,7 @@ static const uint qt_meta_data_FilesSender[] = {
        8,       // revision
        0,       // classname
        0,    0, // classinfo
-       8,   14, // methods
+       9,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -74,16 +76,17 @@ static const uint qt_meta_data_FilesSender[] = {
        1,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    2,   54,    2, 0x06 /* Public */,
+       1,    2,   59,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-       5,    3,   59,    2, 0x0a /* Public */,
-       9,    0,   66,    2, 0x0a /* Public */,
-      10,    1,   67,    2, 0x0a /* Public */,
-      12,    1,   70,    2, 0x0a /* Public */,
-      13,    1,   73,    2, 0x0a /* Public */,
-      14,    2,   76,    2, 0x0a /* Public */,
-      16,    3,   81,    2, 0x0a /* Public */,
+       5,    3,   64,    2, 0x0a /* Public */,
+       9,    0,   71,    2, 0x0a /* Public */,
+      10,    1,   72,    2, 0x0a /* Public */,
+      12,    1,   75,    2, 0x0a /* Public */,
+      13,    1,   78,    2, 0x0a /* Public */,
+      14,    1,   81,    2, 0x0a /* Public */,
+      15,    2,   84,    2, 0x0a /* Public */,
+      17,    3,   89,    2, 0x0a /* Public */,
 
  // signals: parameters
     QMetaType::Void, QMetaType::UShort, QMetaType::QString,    3,    4,
@@ -92,10 +95,11 @@ static const uint qt_meta_data_FilesSender[] = {
     QMetaType::Void, QMetaType::QString, QMetaType::QStringList, QMetaType::QString,    6,    7,    8,
     QMetaType::Void,
     QMetaType::Void, QMetaType::Bool,   11,
+    QMetaType::Void, QMetaType::Bool,   11,
     QMetaType::Void, QMetaType::UShort,    3,
     QMetaType::Void, QMetaType::UShort,    3,
-    QMetaType::Void, QMetaType::UShort, QMetaType::Int,    3,   15,
-    QMetaType::Void, QMetaType::UShort, QMetaType::Bool, QMetaType::QString,    3,   17,    4,
+    QMetaType::Void, QMetaType::UShort, QMetaType::Int,    3,   16,
+    QMetaType::Void, QMetaType::UShort, QMetaType::Bool, QMetaType::QString,    3,   18,    4,
 
        0        // eod
 };
@@ -110,10 +114,11 @@ void FilesSender::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id,
         case 1: _t->BeginSending((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< QStringList(*)>(_a[2])),(*reinterpret_cast< QString(*)>(_a[3]))); break;
         case 2: _t->StopSending(); break;
         case 3: _t->setcompress((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 4: _t->process_compress((*reinterpret_cast< unsigned short(*)>(_a[1]))); break;
-        case 5: _t->process_begin((*reinterpret_cast< unsigned short(*)>(_a[1]))); break;
-        case 6: _t->process_process((*reinterpret_cast< unsigned short(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2]))); break;
-        case 7: _t->process_complete((*reinterpret_cast< unsigned short(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2])),(*reinterpret_cast< QString(*)>(_a[3]))); break;
+        case 4: _t->setencrypt((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 5: _t->process_compress((*reinterpret_cast< unsigned short(*)>(_a[1]))); break;
+        case 6: _t->process_begin((*reinterpret_cast< unsigned short(*)>(_a[1]))); break;
+        case 7: _t->process_process((*reinterpret_cast< unsigned short(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2]))); break;
+        case 8: _t->process_complete((*reinterpret_cast< unsigned short(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2])),(*reinterpret_cast< QString(*)>(_a[3]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -157,13 +162,13 @@ int FilesSender::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 8)
+        if (_id < 9)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 8;
+        _id -= 9;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 8)
+        if (_id < 9)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 8;
+        _id -= 9;
     }
     return _id;
 }

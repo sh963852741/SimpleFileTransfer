@@ -6,6 +6,7 @@
 #include<WinSock2.h>
 #include<Ws2tcpip.h>
 #include<fstream>
+#include <qdatetime.h>
 #pragma comment(lib,"ws2_32.lib")
 using namespace std;
 Q_DECLARE_METATYPE(SOCKET);
@@ -39,8 +40,8 @@ private:
 	QThreadPool threadpool;
 	unsigned short recvCount = 0;
 signals:
-	void BeginRecvSingleFile(QString filePath);
-	void ReceiveFinished(unsigned short id, QString msg);
+	void BeginRecvSingleFile(QString filePath, QTime time);
+	void ReceiveFinished(unsigned short id, QString msg, QTime time);
 };
 
 class SingleFileReceiver :public QObject, public QRunnable
