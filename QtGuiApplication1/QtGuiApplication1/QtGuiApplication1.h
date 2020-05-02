@@ -29,15 +29,19 @@ public slots:
 	void ShowSendingMsg(unsigned short id, QString msg);
 	void ShowRecvingMsg(QString filePath, QTime time);
 	void SendFiles();
+	void StartListening();
 	void ShowRecvingMsgById(unsigned short id, QString msg, QTime time);
 	void selectRecvFloder();
 	void clearRecvTable();
 	void InputIP();
 	void compress();
+	void encryption();
 signals:
 	void BeginSending(QString basepath, QStringList filename, QString IPaddress);
+	void BeignListening(QString IPaddress);
 	void updateRecvFloder(QString floder);
 	void ifcompress(bool compre);
+	void ifencryption(bool encypt);
 	void StopRecv();
 	void BeginRecv();
 };

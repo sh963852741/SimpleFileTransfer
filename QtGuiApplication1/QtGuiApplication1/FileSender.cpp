@@ -12,6 +12,7 @@ void FilesSender::BeginSending(QString basepath, QStringList filename,QString IP
 		SingleFileSender* fs = new SingleFileSender;
 		fs->seqID = i;
 		fs->iscompress = iscompress;
+		fs->isencrypt = isencryption;
 		fs->setAutoDelete(true);
 		connect(fs, &SingleFileSender::begin, this, &FilesSender::process_begin);
 		connect(fs, &SingleFileSender::complete, this, &FilesSender::process_complete);
@@ -36,10 +37,10 @@ void SingleFileSender::run()
 	if (ClientSocket == INVALID_SOCKET)return;
 	sockaddr_in ClientAddr;
 	ClientAddr.sin_family = AF_INET;
-	ClientAddr.sin_port = htons(8888);
-	//ClientAddr.sin_port = htons(atoi(port.c_str()));
-	//const char* IPdotdec = ipAddress.c_str();
-	char IPdotdec[] = "127.0.0.1";
+	//ClientAddr.sin_port = htons(8888);
+	ClientAddr.sin_port = htons(atoi(port.c_str()));
+	const char* IPdotdec = ipAddress.c_str();
+	//char IPdotdec[] = "127.0.0.1";
 	inet_pton(AF_INET, IPdotdec, &ClientAddr.sin_addr.S_un);
 	if (::connect(ClientSocket, (LPSOCKADDR)&ClientAddr, sizeof(ClientAddr)) == SOCKET_ERROR)
 	{
@@ -68,16 +69,23 @@ void SingleFileSender::run()
 	unsigned char buffer[1024];
 
 	unsigned int x = 3, beginPosition = 0;
-	if (iscompress) x = 4;
+
+	if (iscompress&&!isencrypt)   x = 4;//压缩
+	if (!iscompress && isencrypt) x = 5;//加密
+	if (iscompress&&isencrypt)    x = 6;//压缩和加密
 
 	memset(buffer, 0, 1024);
 	memcpy_s(&buffer[0], 4, &x, 4);
 	memcpy_s(&buffer[4], 4, &fileSize, 4);
 	memcpy_s(&buffer[8], 4, &beginPosition, 4);
 	memcpy_s(&buffer[12], 1012, fileName.c_str(), fileName.length());
-	for (int i = 0; i < 1024; i++)
+
+	if (isencrypt)
 	{
-		buffer[i] -= 3;
+		for (int i = 0; i < 1024; i++)
+		{
+			buffer[i] -= 4;
+		}
 	}
 	const char* SendLength = (char*)buffer;
 	CheckSend = send(ClientSocket, SendLength, 1024, 0);
@@ -88,9 +96,13 @@ void SingleFileSender::run()
 	for (unsigned int i = beginPosition; i < fileSize; i += CheckSend)
 	{
 		fp.read((char*)buffer, 1024);
-		for (int i = 0; i < 1024; i++)
+
+		if (isencrypt)
 		{
-			buffer[i] -= 3;
+			for (int i = 0; i < 1024; i++)
+			{
+				buffer[i] -= 4;
+			}
 		}
 		const unsigned char* SendData = buffer;
 		CheckSend = send(ClientSocket, (char*)SendData, fp.gcount(), 0);
@@ -146,6 +158,12 @@ void FilesSender::StopSending()
 void FilesSender::setcompress(bool a)
 {
 	iscompress = a;
+}
+
+void FilesSender::setencrypt(bool a)
+{
+	isencryption = a;
+	
 }
 
 void FilesSender::process_compress(unsigned short id)
