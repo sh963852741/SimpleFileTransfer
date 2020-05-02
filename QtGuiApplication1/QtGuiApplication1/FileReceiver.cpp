@@ -9,13 +9,43 @@ void SingleFileReceiver::run()
 	ofstream fileWriter;
 
 	int rev = recv(socket, (char*)RevData, 1024, 0);
-	for (int i = 0; i < 1024; i++)
-	{
-		RevData[i] += 3;
-	}
+	int type;
+	bool iscompress;
+	bool isencrypt;
 	if (rev > 0)
 	{
-		int iscompress;
+		memcpy_s(&type, 4, &RevData[0], 4);
+		type = type & 0x000000ff;
+		if (type == 1)
+		{
+			isencrypt = true;
+			iscompress = false;
+		}
+		if (type == 2)
+		{
+			isencrypt = true;
+			iscompress = true;
+		}
+		if (type == 3)
+		{
+			isencrypt = false;
+			iscompress = false;
+		}
+		if (type == 4)
+		{
+			isencrypt = false;
+			iscompress = true;
+		}
+
+		if (isencrypt)
+		{
+			for (int i = 0; i < 1024; i++)
+			{
+				RevData[i] += 4;
+			}
+		}
+
+
 		unsigned int fileLength;
 		string fileName = (char*)&RevData[12];
 		string fullPath = saveFlod + fileName;
@@ -26,11 +56,10 @@ void SingleFileReceiver::run()
 		string comprefile = fullPath;
 		comprefile.replace(comprefile.begin() + comprefile.find_last_of('.'), comprefile.end(), "Compre.tmp");
 		
-		memcpy_s(&iscompress, 4, &RevData[0], 4);
 		memcpy_s(&fileLength, 4, &RevData[4], 4);
 		unsigned int requestPosition;
 
-		if (iscompress == 4)
+		if (iscompress)
 		{
 			fullPath = comprefile;
 		}
@@ -76,9 +105,12 @@ void SingleFileReceiver::run()
 		for (unsigned int i = requestPosition; i < fileLength;)
 		{
 			rev = recv(socket, (char*)RevData, 1024, 0);
-			for (int i = 0; i < 1024; i++)
+			if (isencrypt)
 			{
-				RevData[i] += 3;
+				for (int i = 0; i < 1024; i++)
+				{
+					RevData[i] += 4;
+				}
 			}
 			/* 如果传输中断 */
 			if (stop || rev == SOCKET_ERROR || rev == 0)
@@ -95,10 +127,10 @@ void SingleFileReceiver::run()
 			}
 
 			i += rev;
-			//fileWriter.write((char*)RevData, rev);
+			fileWriter.write((char*)RevData, rev);
 		}
 		fileWriter.close();
-		if (iscompress == 4)
+		if (iscompress)
 		{
 			inf(fullPath, saveFlod + fileName);
 			QString str = QString::fromLocal8Bit(fullPath.c_str());
@@ -131,8 +163,11 @@ void Listener::run()
 	if (SeverListen == INVALID_SOCKET)return;
 	sockaddr_in sin;
 	sin.sin_family = AF_INET;
-	sin.sin_port = htons(8888);
-	sin.sin_addr.S_un.S_addr = INADDR_ANY;
+	sin.sin_port = htons(atoi(port.c_str()));
+	//sin.sin_port = htons(10000);
+	const char* IPdotdec = ipAddress.c_str();
+	//sin.sin_addr.S_un.S_addr = INADDR_ANY;
+	sin.sin_addr.S_un.S_addr = inet_addr(IPdotdec);
 	if (::bind(SeverListen, (SOCKADDR*)&sin, sizeof(SOCKADDR)) == SOCKET_ERROR)return;
 	if (listen(SeverListen, 5) == SOCKET_ERROR)return;
 
@@ -153,11 +188,13 @@ void Listener::run()
 	}
 }
 
-void FilesReceiver::BeginListening()
+void FilesReceiver::BeginListening(QString IPaddress)
 {
 	qRegisterMetaType<SOCKET>("SOCKET");
 	connect(listener, &Listener::IncommingFile, this, &FilesReceiver::ReceiveSingleFile);
 	//connect(listener, &Listener::finished, listener, &Listener::deleteLater);
+	listener->ipAddress = IPaddress.mid(0, IPaddress.indexOf(":")).toLocal8Bit();
+	listener->port = IPaddress.mid(IPaddress.indexOf(":") + 1).toLocal8Bit();
 	listener->start();
 }
 

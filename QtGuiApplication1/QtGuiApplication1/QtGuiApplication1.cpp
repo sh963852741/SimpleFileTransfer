@@ -15,15 +15,17 @@ QtGuiApplication1::QtGuiApplication1(QWidget* parent)
 	ui.setupUi(this);
 	QRegExp regExp("\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}:\\d{1,5}");
 	ui.lineEdit->setValidator(new QRegExpValidator(regExp, this));
-
+	ui.lineEdit_4->setValidator(new QRegExpValidator(regExp, this));
 	FilesReceiver* fr = new FilesReceiver;
 	FilesSender* fs = new FilesSender;
 	fr->moveToThread(&receiveFiles);
-	fr->BeginListening();
+	//fr->BeginListening();
 	fs->moveToThread(&sendFiles);
-
+	 
 	connect(ui.checkBox, &QCheckBox::clicked, this, &QtGuiApplication1::compress);
 	connect(this, &QtGuiApplication1::ifcompress, fs, &FilesSender::setcompress);
+	connect(ui.checkBox2, &QCheckBox::clicked, this, &QtGuiApplication1::encryption);
+	connect(this, &QtGuiApplication1::ifencryption, fs, &FilesSender::setencrypt);
 	connect(ui.pushButton, &QPushButton::clicked, this, &QtGuiApplication1::clearRecvTable);
 	connect(ui.pushButton_2, &QPushButton::clicked, this, &QtGuiApplication1::ChangeRecvState);
 	connect(this, &QtGuiApplication1::StopRecv, fr, &FilesReceiver::StopReceiving);
@@ -34,11 +36,14 @@ QtGuiApplication1::QtGuiApplication1(QWidget* parent)
 	connect(this, &QtGuiApplication1::updateRecvFloder, fr, &FilesReceiver::updateRecvFloder);
 	connect(ui.pushButton_4, &QPushButton::clicked, this, &QtGuiApplication1::showFileList);
 	connect(ui.pushButton_5, &QPushButton::clicked, this, &QtGuiApplication1::selectRecvFloder);
+	connect(ui.pushButton_6, &QPushButton::clicked, this, &QtGuiApplication1::StartListening);
+	connect(this, &QtGuiApplication1::BeignListening, fr, &FilesReceiver::BeginListening);
 	connect(fs, &FilesSender::rpt_process, this, &QtGuiApplication1::ShowSendingMsg);
 	//connect(&receiveFiles, &QThread::started, this, &QtGuiApplication1::ShowMsg);
 	connect(fr, &FilesReceiver::BeginRecvSingleFile, this, &QtGuiApplication1::ShowRecvingMsg);
 	connect(fr, &FilesReceiver::ReceiveFinished, this, &QtGuiApplication1::ShowRecvingMsgById);
 	compress();
+	encryption();
 	sendFiles.start();
 	receiveFiles.start();
 }
@@ -110,14 +115,34 @@ void QtGuiApplication1::SendFiles()
 	int pos = 0;
 	QRegExp regExp("\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}:\\d{1,5}");
 	QRegExpValidator v(regExp, nullptr);
-	if(v.validate(ui.lineEdit->text(), pos)==QValidator::Intermediate)
+	if (v.validate(ui.lineEdit->text(), pos) == QValidator::Intermediate)
+	{
 		QMessageBox::warning(nullptr, QString::fromLocal8Bit("IP地址和端口不完整"), QString::fromLocal8Bit("请输入完整的正确的IP地址和端口"));
+		return;
+	}
 	QStringList fileList;
 	for (int i = 0; i < ui.tableWidget->rowCount(); ++i)
 	{
 		fileList << QDir::toNativeSeparators(ui.tableWidget->item(i, 0)->text());
 	}
 	emit BeginSending(ui.lineEdit_2->text(), fileList, ui.lineEdit->text());
+}
+
+void QtGuiApplication1::StartListening()
+{
+	int pos = 0;
+	QRegExp regExp("\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}:\\d{1,5}");
+	QRegExpValidator v(regExp, nullptr);
+	if (v.validate(ui.lineEdit_4->text(), pos) == QValidator::Intermediate)
+	{
+		QMessageBox::warning(nullptr, QString::fromLocal8Bit("IP地址和端口不完整"), QString::fromLocal8Bit("请输入完整的正确的IP地址和端口"));
+		return;
+	}
+	
+
+	QMessageBox::information(nullptr, QString::fromLocal8Bit("设置正确"), QString::fromLocal8Bit("已开始监听"));
+	emit BeignListening(ui.lineEdit_4->text());
+
 }
 
 void QtGuiApplication1::ShowRecvingMsgById(unsigned short id, QString msg)
@@ -168,4 +193,18 @@ void QtGuiApplication1::compress()
 		emit ifcompress(false);
 
 }
+
+void QtGuiApplication1::encryption()
+{
+	if (ui.checkBox2->isChecked())
+	{
+		emit ifencryption(true);
+	}
+	else
+		emit ifencryption(false);
+
+
+}
+
+
 

@@ -14,6 +14,8 @@ class Listener :public QThread
 	Q_OBJECT
 public:
 	void run();
+	string ipAddress;
+	string port;
 signals:
 	void IncommingFile(SOCKET socket);
 };
@@ -24,7 +26,7 @@ class FilesReceiver :public QObject
 public:
 	QString saveFlod;
 public slots:
-	void BeginListening();
+	void BeginListening(QString IPaddress);
 	void StopListening();
 	void process_Finished(unsigned short id, bool success, QString filePath);
 	void process_Begin(QString filePath);
