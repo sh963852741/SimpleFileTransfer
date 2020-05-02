@@ -137,7 +137,7 @@ void SingleFileReceiver::run()
 			QFile::remove(str);
 		}
 		MD5 md5;
-		md5.update(ifstream(saveFlod+fileName));
+		md5.update(ifstream(saveFlod+fileName, ios::binary));
 		string msg = md5.toString();
 		send(socket, msg.c_str(), 33, 0);
 		rev = recv(socket, (char*)RevData, 16, 0);

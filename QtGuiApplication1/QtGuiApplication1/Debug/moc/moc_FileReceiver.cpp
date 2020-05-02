@@ -144,8 +144,8 @@ void Listener::IncommingFile(SOCKET _t1)
     QMetaObject::activate(this, &staticMetaObject, 0, _a);
 }
 struct qt_meta_stringdata_FilesReceiver_t {
-    QByteArrayData data[20];
-    char stringdata0[225];
+    QByteArrayData data[21];
+    char stringdata0[235];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -163,22 +163,23 @@ QT_MOC_LITERAL(5, 49, 15), // "ReceiveFinished"
 QT_MOC_LITERAL(6, 65, 2), // "id"
 QT_MOC_LITERAL(7, 68, 3), // "msg"
 QT_MOC_LITERAL(8, 72, 14), // "BeginListening"
-QT_MOC_LITERAL(9, 87, 13), // "StopListening"
-QT_MOC_LITERAL(10, 101, 16), // "process_Finished"
-QT_MOC_LITERAL(11, 118, 7), // "success"
-QT_MOC_LITERAL(12, 126, 13), // "process_Begin"
-QT_MOC_LITERAL(13, 140, 17), // "ReceiveSingleFile"
-QT_MOC_LITERAL(14, 158, 6), // "SOCKET"
-QT_MOC_LITERAL(15, 165, 6), // "socket"
-QT_MOC_LITERAL(16, 172, 13), // "StopReceiving"
-QT_MOC_LITERAL(17, 186, 16), // "updateRecvFloder"
-QT_MOC_LITERAL(18, 203, 6), // "floder"
-QT_MOC_LITERAL(19, 210, 14) // "BeginReceiving"
+QT_MOC_LITERAL(9, 87, 9), // "IPaddress"
+QT_MOC_LITERAL(10, 97, 13), // "StopListening"
+QT_MOC_LITERAL(11, 111, 16), // "process_Finished"
+QT_MOC_LITERAL(12, 128, 7), // "success"
+QT_MOC_LITERAL(13, 136, 13), // "process_Begin"
+QT_MOC_LITERAL(14, 150, 17), // "ReceiveSingleFile"
+QT_MOC_LITERAL(15, 168, 6), // "SOCKET"
+QT_MOC_LITERAL(16, 175, 6), // "socket"
+QT_MOC_LITERAL(17, 182, 13), // "StopReceiving"
+QT_MOC_LITERAL(18, 196, 16), // "updateRecvFloder"
+QT_MOC_LITERAL(19, 213, 6), // "floder"
+QT_MOC_LITERAL(20, 220, 14) // "BeginReceiving"
 
     },
     "FilesReceiver\0BeginRecvSingleFile\0\0"
     "filePath\0time\0ReceiveFinished\0id\0msg\0"
-    "BeginListening\0StopListening\0"
+    "BeginListening\0IPaddress\0StopListening\0"
     "process_Finished\0success\0process_Begin\0"
     "ReceiveSingleFile\0SOCKET\0socket\0"
     "StopReceiving\0updateRecvFloder\0floder\0"
@@ -204,27 +205,27 @@ static const uint qt_meta_data_FilesReceiver[] = {
        5,    3,   69,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-       8,    0,   76,    2, 0x0a /* Public */,
-       9,    0,   77,    2, 0x0a /* Public */,
-      10,    3,   78,    2, 0x0a /* Public */,
-      12,    1,   85,    2, 0x0a /* Public */,
-      13,    1,   88,    2, 0x0a /* Public */,
-      16,    0,   91,    2, 0x0a /* Public */,
-      17,    1,   92,    2, 0x0a /* Public */,
-      19,    0,   95,    2, 0x0a /* Public */,
+       8,    1,   76,    2, 0x0a /* Public */,
+      10,    0,   79,    2, 0x0a /* Public */,
+      11,    3,   80,    2, 0x0a /* Public */,
+      13,    1,   87,    2, 0x0a /* Public */,
+      14,    1,   90,    2, 0x0a /* Public */,
+      17,    0,   93,    2, 0x0a /* Public */,
+      18,    1,   94,    2, 0x0a /* Public */,
+      20,    0,   97,    2, 0x0a /* Public */,
 
  // signals: parameters
     QMetaType::Void, QMetaType::QString, QMetaType::QTime,    3,    4,
     QMetaType::Void, QMetaType::UShort, QMetaType::QString, QMetaType::QTime,    6,    7,    4,
 
  // slots: parameters
+    QMetaType::Void, QMetaType::QString,    9,
     QMetaType::Void,
-    QMetaType::Void,
-    QMetaType::Void, QMetaType::UShort, QMetaType::Bool, QMetaType::QString,    6,   11,    3,
+    QMetaType::Void, QMetaType::UShort, QMetaType::Bool, QMetaType::QString,    6,   12,    3,
     QMetaType::Void, QMetaType::QString,    3,
-    QMetaType::Void, 0x80000000 | 14,   15,
+    QMetaType::Void, 0x80000000 | 15,   16,
     QMetaType::Void,
-    QMetaType::Void, QMetaType::QString,   18,
+    QMetaType::Void, QMetaType::QString,   19,
     QMetaType::Void,
 
        0        // eod
@@ -238,7 +239,7 @@ void FilesReceiver::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _i
         switch (_id) {
         case 0: _t->BeginRecvSingleFile((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< QTime(*)>(_a[2]))); break;
         case 1: _t->ReceiveFinished((*reinterpret_cast< unsigned short(*)>(_a[1])),(*reinterpret_cast< QString(*)>(_a[2])),(*reinterpret_cast< QTime(*)>(_a[3]))); break;
-        case 2: _t->BeginListening(); break;
+        case 2: _t->BeginListening((*reinterpret_cast< QString(*)>(_a[1]))); break;
         case 3: _t->StopListening(); break;
         case 4: _t->process_Finished((*reinterpret_cast< unsigned short(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2])),(*reinterpret_cast< QString(*)>(_a[3]))); break;
         case 5: _t->process_Begin((*reinterpret_cast< QString(*)>(_a[1]))); break;

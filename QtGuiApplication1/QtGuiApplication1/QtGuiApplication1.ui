@@ -102,7 +102,7 @@
        <rect>
         <x>460</x>
         <y>10</y>
-        <width>177</width>
+        <width>141</width>
         <height>61</height>
        </rect>
       </property>
@@ -178,7 +178,12 @@
       </column>
       <column>
        <property name="text">
-        <string>操作</string>
+        <string>开始时间</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>结束时间</string>
        </property>
       </column>
      </widget>
@@ -213,7 +218,7 @@
        <rect>
         <x>460</x>
         <y>10</y>
-        <width>177</width>
+        <width>141</width>
         <height>61</height>
        </rect>
       </property>
@@ -282,7 +287,7 @@
      <x>0</x>
      <y>0</y>
      <width>610</width>
-     <height>26</height>
+     <height>23</height>
     </rect>
    </property>
   </widget>

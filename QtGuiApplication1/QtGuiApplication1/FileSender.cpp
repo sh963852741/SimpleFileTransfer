@@ -124,7 +124,7 @@ void SingleFileSender::run()
 	else
 	{
 		MD5 md5;
-		md5.update(ifstream(floderName + fileName));
+		md5.update(ifstream(floderName + fileName, ios::binary));
 		string res = md5.toString();
 		if (strcmp(res.c_str(), (char*)buffer) != 0)
 		{
