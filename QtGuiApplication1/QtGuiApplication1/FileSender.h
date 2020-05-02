@@ -15,12 +15,14 @@ public slots:
 	void BeginSending(QString basepath, QStringList filename, QString IPaddress);
 	void StopSending();
 	void setcompress(bool a);
+	void setencrypt(bool a);
 	void process_compress(unsigned short id);
 	void process_begin(unsigned short id);
 	void process_process(unsigned short id, int value);
 	void process_complete(unsigned short id, bool success, QString msg);
 private:
 	QThreadPool sthreadpool;
+	bool isencryption;
 	bool iscompress;
 signals:
 	void rpt_process(unsigned short id, QString msg);
@@ -32,6 +34,7 @@ class SingleFileSender :public QObject, public QRunnable
 public:
 	static bool stop;
 	bool iscompress;
+	bool isencrypt;
 	string ipAddress;
 	string port;
 	string fileName;
