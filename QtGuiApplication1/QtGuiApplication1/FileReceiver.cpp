@@ -225,7 +225,8 @@ void FilesReceiver::ReceiveSingleFile(SOCKET socket)
 	connect(fr, &SingleFileReceiver::finished, this, &FilesReceiver::process_Finished);
 
 	fr->socket = socket;
-	threadpool.start(fr);
+	if (SingleFileReceiver::stop) closesocket(socket);
+	else threadpool.start(fr);
 }
 
 void FilesReceiver::StopReceiving()

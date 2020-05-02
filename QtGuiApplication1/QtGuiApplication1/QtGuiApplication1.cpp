@@ -207,6 +207,3 @@ void QtGuiApplication1::encryption()
 
 
 }
-
-
-
