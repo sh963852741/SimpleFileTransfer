@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Class Name="FilesReceiver">
+    <Position X="10.25" Y="4" Width="2.25" />
+    <InheritanceLine Type="QObject" ManuallyRouted="true">
+      <Path>
+        <Point X="12.5" Y="1.548" />
+        <Point X="12.5" Y="3.312" />
+        <Point X="11.375" Y="3.312" />
+        <Point X="11.375" Y="4" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAAAAAAQAABQAAAIQCAAQAAQAAEAACAAA=</HashCode>
+      <FileName>FileReceiver.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FilesSender">
+    <Position X="12.75" Y="4" Width="2.25" />
+    <InheritanceLine Type="QObject" ManuallyRouted="true" FixedToPoint="true">
+      <Path>
+        <Point X="12.5" Y="1.548" />
+        <Point X="12.5" Y="3.314" />
+        <Point X="14" Y="3.314" />
+        <Point X="14" Y="4" />
+      </Path>
+      <InheritanceModifierLabel ManuallyPlaced="true">
+        <Position X="0.133" Y="0.12" />
+      </InheritanceModifierLabel>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAABABAAAAAAAAAAAAAAAIAAAAAAACEQAAAAACABA=</HashCode>
+      <FileName>FileSender.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Listener">
+    <Position X="15.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>FileReceiver.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MD5">
+    <Position X="15.25" Y="4.75" Width="2.25" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Enum Name="MD5::__unnamed_enum_000b_1" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>md5.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>gAACQEAkAAAAIAgAAACADAAAACAGAABAAACgAAAEAAA=</HashCode>
+      <FileName>md5.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="QtGuiApplication1">
+    <Position X="3" Y="5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>WEAAEAAgECAAMJAAgAAAAAAAIAQAAABAAAAQAAAAAAA=</HashCode>
+      <FileName>QtGuiApplication1.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SingleFileReceiver">
+    <Position X="8.25" Y="5" Width="1.75" />
+    <InheritanceLine Type="QObject">
+      <InheritanceModifierLabel ManuallyPlaced="true">
+        <Position X="-0.555" Y="0.089" />
+      </InheritanceModifierLabel>
+    </InheritanceLine>
+    <InheritanceLine Type="QRunnable">
+      <InheritanceModifierLabel ManuallyPlaced="true">
+        <Position X="0.464" Y="0.643" />
+      </InheritanceModifierLabel>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAAAAAAAAAAAAAAQAAAgAAAAQAEAAAAAAAA=</HashCode>
+      <FileName>FileReceiver.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SingleFileSender">
+    <Position X="6" Y="5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgABAgAAAIAAAAAAAAIQAAAAAAgAAEAAAAAgCAA=</HashCode>
+      <FileName>FileSender.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="QObject" Collapsed="true">
+    <Position X="11.75" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CCgAAAAQQIAAAAVUgQAAEMCGAAMQiIIHBEAiIhJGACU=</HashCode>
+      <FileName>C:\Qt\5.14.1\msvc2017\include\QtCore\qobject.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="QMainWindow" Collapsed="true">
+    <Position X="3.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AoACQgKYCA0hRAgRkKBY4oAAABEAABuBggAgIAMgACA=</HashCode>
+      <FileName>C:\Qt\5.14.1\msvc2017\include\QtWidgets\qmainwindow.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="QThread" Collapsed="true">
+    <Position X="14.25" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEwAASAQAAAFISBAQAAAEAAQIBAIUAABRQKQABEA=</HashCode>
+      <FileName>C:\Qt\5.14.1\msvc2017\include\QtCore\qthread.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="QRunnable" Collapsed="true">
+    <Position X="7.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgAAEAAAAAAIgAAAAAAACAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>C:\Qt\5.14.1\msvc2017\include\QtCore\qrunnable.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Microsoft YaHei UI" Size="9" />
+</ClassDiagram>

@@ -1,4 +1,4 @@
-#include "FileReceiver.h"
+ï»¿#include "FileReceiver.h"
 #include"compre.h"
 #include <direct.h>
 #include <io.h>
@@ -38,8 +38,8 @@ void SingleFileReceiver::run()
 		fileWriter.open(fullPath, ios::_Nocreate | ios::binary);
 
 
-		/*ÏÈÅĞ¶ÏÎÄ¼şÊÇ·ñĞèÒª¶ÏµãĞø´«*/
-		if (fileWriter.is_open()) // Èç¹ûÎÄ¼şÒÑ¾­ÏÂÔØ
+		/*å…ˆåˆ¤æ–­æ–‡ä»¶æ˜¯å¦éœ€è¦æ–­ç‚¹ç»­ä¼ */
+		if (fileWriter.is_open()) // å¦‚æœæ–‡ä»¶å·²ç»ä¸‹è½½
 		{
 			ifstream readTmpFile;
 			readTmpFile.open(tempfile);
@@ -47,7 +47,7 @@ void SingleFileReceiver::run()
 			else requestPosition = 0;
 			readTmpFile.close();
 		}
-		else // Èç¹ûÎÄ¼şÃ»ÓĞÏÂÔØ
+		else // å¦‚æœæ–‡ä»¶æ²¡æœ‰ä¸‹è½½
 		{
 			if (access(fullPath.c_str(), 6) == -1)
 			{
@@ -68,10 +68,10 @@ void SingleFileReceiver::run()
 			requestPosition = 0;
 		}
 
-		/*ÇëÇó¿Í»§¶Ë´ÓÖ¸¶¨Î»ÖÃ¿ªÊ¼·¢ËÍÎÄ¼ş*/
+		/*è¯·æ±‚å®¢æˆ·ç«¯ä»æŒ‡å®šä½ç½®å¼€å§‹å‘é€æ–‡ä»¶*/
 		send(socket, (char*)&requestPosition, 4, 0);
 
-		/*¿ªÊ¼½ÓÊÕÎÄ¼ş*/
+		/*å¼€å§‹æ¥æ”¶æ–‡ä»¶*/
 		fileWriter.seekp(requestPosition, ios::beg);
 		for (unsigned int i = requestPosition; i < fileLength;)
 		{
@@ -80,17 +80,17 @@ void SingleFileReceiver::run()
 			{
 				RevData[i] += 3;
 			}
-			/* Èç¹û´«ÊäÖĞ¶Ï */
+			/* å¦‚æœä¼ è¾“ä¸­æ–­ */
 			if (stop || rev == SOCKET_ERROR || rev == 0)
 			{
-				/*¼ÇÂ¼µ±Ç°ÏÂÔØ½ø¶È*/
+				/*è®°å½•å½“å‰ä¸‹è½½è¿›åº¦*/
 				ofstream writetemp;
 				writetemp.open(tempfile, ios::trunc);
 				writetemp << i;
 				writetemp.close();
 				fileWriter.close();
 				closesocket(socket);
-				emit finished(seqID, false, QString::fromLocal8Bit("´«ÊäÖĞ¶Ï"));
+				emit finished(seqID, false, QString::fromLocal8Bit("ä¼ è¾“ä¸­æ–­"));
 				return;
 			}
 
@@ -171,12 +171,12 @@ void FilesReceiver::StopListening()
 
 void FilesReceiver::process_Finished(unsigned short id, bool success, QString filePath)
 {
-	emit ReceiveFinished(id, QString::fromLocal8Bit(success ? "´«ÊäÍê³É" : "´«ÊäÊ§°Ü"));
+	emit ReceiveFinished(id, QString::fromLocal8Bit(success ? "ä¼ è¾“å®Œæˆ" : "ä¼ è¾“å¤±è´¥"), QTime::currentTime());
 }
 
 void FilesReceiver::process_Begin(QString filePath)
 {
-	emit BeginRecvSingleFile(filePath);
+	emit BeginRecvSingleFile(filePath, QTime::currentTime());
 }
 
 void FilesReceiver::ReceiveSingleFile(SOCKET socket)
