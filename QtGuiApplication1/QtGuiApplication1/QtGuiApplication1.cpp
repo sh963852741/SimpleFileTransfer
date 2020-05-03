@@ -207,3 +207,21 @@ void QtGuiApplication1::encryption()
 
 
 }
+
+void QtGuiApplication1::closeEvent(QCloseEvent*event)
+{
+
+	QMessageBox::StandardButton button;
+	button = QMessageBox::question(this, QString::fromLocal8Bit("退出程序"), QString::fromLocal8Bit("确认退出程序"), QMessageBox::Yes | QMessageBox::No);
+	if (button == QMessageBox::No)
+	{
+		event->ignore();
+	}
+
+	else if(button == QMessageBox::Yes)
+	{
+		
+		emit StopRecv();
+		event->accept();
+	}
+}

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QtWidgets/QMainWindow>
+#include<QCloseEvent>
 #include "ui_QtGuiApplication1.h"
 #include <Qtcore/qthread.h>
 #include <Qtcore/QList>
@@ -23,6 +24,8 @@ private:
 	QThread receiveFiles;
 	QThread sendFiles;
 	bool recvState = true;
+protected:
+	void closeEvent(QCloseEvent*event);
 public slots:
 	void ChangeRecvState();
 	void showFileList();
