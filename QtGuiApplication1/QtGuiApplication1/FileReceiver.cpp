@@ -82,7 +82,7 @@ void SingleFileReceiver::run()
 			{
 				for (int i = 0; i < fullPath.length(); ++i)
 				{
-					if (fullPath[i] == '\\')
+					if (fullPath[i] == '\\' || fullPath[i] == '/')
 					{
 						string temp = fullPath.substr(0, i);
 						if (access(temp.c_str(), 0) == -1)

@@ -86,7 +86,12 @@ void QtGuiApplication1::showFileList()
 	QString dirPath = QFileDialog::getExistingDirectory(this, "choose src Directory", "/");
 	if (dirPath == "")return;
 	ui.lineEdit_2->setText(QDir::toNativeSeparators(dirPath));
-	QStringList fileList = getFiles(dirPath);
+	fileList = getFiles(dirPath);
+	if (fileList.length() > 10000)
+	{
+		QMessageBox::warning(nullptr, QString::fromLocal8Bit("警告"), QString::fromLocal8Bit("文件过多，无法在UI上显示"));
+		return;
+	}
 	ui.tableWidget->setRowCount(fileList.size());
 	for (int i = 0; i < fileList.size(); i++)
 	{
@@ -121,10 +126,10 @@ void QtGuiApplication1::SendFiles()
 		QMessageBox::warning(nullptr, QString::fromLocal8Bit("IP地址和端口不完整"), QString::fromLocal8Bit("请输入完整的正确的IP地址和端口"));
 		return;
 	}
-	QStringList fileList;
-	for (int i = 0; i < ui.tableWidget->rowCount(); ++i)
+
+	for (int i = 0; i < fileList.length(); ++i)
 	{
-		fileList << QDir::toNativeSeparators(ui.tableWidget->item(i, 0)->text());
+		fileList[i] = QDir::toNativeSeparators(fileList[i]);
 	}
 	emit BeginSending(ui.lineEdit_2->text(), fileList, ui.lineEdit->text());
 }

@@ -22,6 +22,7 @@ private:
 	Ui::QtGuiApplication1Class ui;
 	QThread receiveFiles;
 	QThread sendFiles;
+	QStringList fileList;
 	bool recvState = true;
 public slots:
 	void ChangeRecvState();
