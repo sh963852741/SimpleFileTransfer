@@ -88,6 +88,7 @@ void QtGuiApplication1::showFileList()
 	ui.lineEdit_2->setText(QDir::toNativeSeparators(dirPath));
 	QStringList fileList = getFiles(dirPath);
 	ui.tableWidget->setRowCount(fileList.size());
+	ui.tableWidget->clearContents();
 	for (int i = 0; i < fileList.size(); i++)
 	{
 		QString path = fileList[i];
@@ -150,7 +151,7 @@ void QtGuiApplication1::ShowRecvingMsgById(unsigned short id, QString msg, QTime
 {
 	ui.tableWidget_2->setItem(id, 1, new QTableWidgetItem(msg));
 	ui.tableWidget_2->setItem(id, 3, new QTableWidgetItem(time.toString("h:m:s")));
-}
+} 
 
 void QtGuiApplication1::selectRecvFloder()
 {
@@ -161,8 +162,9 @@ void QtGuiApplication1::selectRecvFloder()
 }
 
 void QtGuiApplication1::clearRecvTable()
-{
-	ui.tableWidget_2->clear();
+{  
+	ui.tableWidget_2->clearContents();
+	ui.tableWidget_2->setRowCount(0);
 }
 
 void QtGuiApplication1::ChangeRecvState()
@@ -222,6 +224,8 @@ void QtGuiApplication1::closeEvent(QCloseEvent*event)
 	{
 		
 		emit StopRecv();
+		
+
 		event->accept();
 	}
 }
