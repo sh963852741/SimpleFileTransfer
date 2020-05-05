@@ -6,6 +6,7 @@
 #include<WinSock2.h>
 #include<Ws2tcpip.h>
 #include"QtGuiApplication1.h"
+#include <qdatetime.h>
 #pragma comment(lib,"ws2_32.lib")
 using namespace std;
 class FilesSender :public QObject
@@ -20,6 +21,7 @@ public slots:
 	void process_begin(unsigned short id);
 	void process_process(unsigned short id, int value);
 	void process_complete(unsigned short id, bool success, QString msg);
+	void updatesendlog(QString basepath, QString filename, QTime time, QString mes);
 private:
 	QThreadPool sthreadpool;
 	bool isencryption;
@@ -43,6 +45,7 @@ public:
 public:
 	void run();
 signals:
+	void updatelog(QString basepath, QString filename, QTime time, QString mes);
 	void compressing(unsigned id);
 	void begin(unsigned short id);
 	void process(unsigned short id, int value);
