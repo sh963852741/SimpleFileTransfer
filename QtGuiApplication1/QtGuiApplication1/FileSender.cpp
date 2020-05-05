@@ -17,6 +17,7 @@ void FilesSender::BeginSending(QString basepath, QStringList filename,QString IP
 		connect(fs, &SingleFileSender::begin, this, &FilesSender::process_begin);
 		connect(fs, &SingleFileSender::complete, this, &FilesSender::process_complete);
 		connect(fs, &SingleFileSender::compressing, this, &FilesSender::process_compress);
+		connect(fs, &SingleFileSender::updatelog, this, &FilesSender::updatesendlog);
 		fs->ipAddress = IPaddress.mid(0, IPaddress.indexOf(":")).toLocal8Bit();
 		fs->port = IPaddress.mid(IPaddress.indexOf(":")+1).toLocal8Bit();
 		fs->floderName = basepath.toLocal8Bit();
@@ -63,12 +64,13 @@ void SingleFileSender::run()
 		fp.open(floderName + fileName, ios::binary);
 	emit begin(seqID);
 	fp.seekg(0, ios::end);
-	unsigned int fileSize = fp.tellg();
+	unsigned long long int fileSize = fp.tellg();
 
 	int CheckSend;
 	unsigned char buffer[1024];
 
-	unsigned int x = 3, beginPosition = 0;
+	unsigned int x = 3;
+	unsigned long long int beginPosition = 0;
 
 	if (iscompress&&!isencrypt)   x = 4;//压缩
 	if (!iscompress && isencrypt) x = 5;//加密
@@ -76,9 +78,9 @@ void SingleFileSender::run()
 
 	memset(buffer, 0, 1024);
 	memcpy_s(&buffer[0], 4, &x, 4);
-	memcpy_s(&buffer[4], 4, &fileSize, 4);
-	memcpy_s(&buffer[8], 4, &beginPosition, 4);
-	memcpy_s(&buffer[12], 1012, fileName.c_str(), fileName.length());
+	memcpy_s(&buffer[4], 8, &fileSize, 8);
+	memcpy_s(&buffer[12], 8, &beginPosition, 8);
+	memcpy_s(&buffer[20], 1004, fileName.c_str(), fileName.length());
 
 	if (isencrypt)
 	{
@@ -90,10 +92,10 @@ void SingleFileSender::run()
 	const char* SendLength = (char*)buffer;
 	CheckSend = send(ClientSocket, SendLength, 1024, 0);
 
-	int l = recv(ClientSocket, (char*)&beginPosition, 4, 0);
+	int l = recv(ClientSocket, (char*)&beginPosition, 8, 0);
 	fp.seekg(beginPosition, ios::beg);
 
-	for (unsigned int i = beginPosition; i < fileSize; i += CheckSend)
+	for (unsigned long long int i = beginPosition; i < fileSize; i += CheckSend)
 	{
 		fp.read((char*)buffer, 1024);
 
@@ -119,6 +121,7 @@ void SingleFileSender::run()
 	CheckSend = recv(ClientSocket, (char*)buffer, 33, 0);
 	if (CheckSend == SOCKET_ERROR || CheckSend == 0)
 	{
+		emit updatelog(QString::fromLocal8Bit(floderName.c_str()),QString::fromLocal8Bit( fileName.c_str()), QTime::currentTime(), QString::fromLocal8Bit("发送失败"));
 		emit complete(seqID, false, "发送失败");
 	}
 	else
@@ -130,6 +133,7 @@ void SingleFileSender::run()
 		{
 			char msg[] = "md5 check error";
 			send(ClientSocket, msg, 16, 0);
+			emit updatelog(QString::fromLocal8Bit(floderName.c_str()), QString::fromLocal8Bit(fileName.c_str()), QTime::currentTime(), QString::fromLocal8Bit("发送失败"));
 			emit complete(seqID, false, "发送失败");
 			return;
 		}
@@ -146,10 +150,22 @@ void SingleFileSender::run()
 		QString str = QString::fromLocal8Bit(tempfile.c_str());
 		QFile::remove(str);
 	}
+	emit updatelog(QString::fromLocal8Bit(floderName.c_str()), QString::fromLocal8Bit(fileName.c_str()), QTime::currentTime(), QString::fromLocal8Bit("发送成功"));
 	emit complete(seqID, true, "");
 	return;
 }
 
+void FilesSender::updatesendlog(QString basepath, QString filename, QTime time, QString mes)
+{
+	ofstream output;
+	output.open("sendlog.csv", ios::app);
+	string nowtime = time.toString("h:m:s").toLocal8Bit();
+	string floder = basepath.toLocal8Bit();
+	string file = filename.toLocal8Bit();
+	string message = mes.toLocal8Bit();
+	output << nowtime<<","<<floder<<","<<file<<","<<message<<'\n';
+	output.close();
+}
 void FilesSender::StopSending()
 {
 

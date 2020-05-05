@@ -93,6 +93,7 @@ void QtGuiApplication1::showFileList()
 		return;
 	}
 	ui.tableWidget->setRowCount(fileList.size());
+	ui.tableWidget->clearContents();
 	for (int i = 0; i < fileList.size(); i++)
 	{
 		QString path = fileList[i];
@@ -155,7 +156,7 @@ void QtGuiApplication1::ShowRecvingMsgById(unsigned short id, QString msg, QTime
 {
 	ui.tableWidget_2->setItem(id, 1, new QTableWidgetItem(msg));
 	ui.tableWidget_2->setItem(id, 3, new QTableWidgetItem(time.toString("h:m:s")));
-}
+} 
 
 void QtGuiApplication1::selectRecvFloder()
 {
@@ -166,8 +167,9 @@ void QtGuiApplication1::selectRecvFloder()
 }
 
 void QtGuiApplication1::clearRecvTable()
-{
-	ui.tableWidget_2->clear();
+{  
+	ui.tableWidget_2->clearContents();
+	ui.tableWidget_2->setRowCount(0);
 }
 
 void QtGuiApplication1::ChangeRecvState()
@@ -211,4 +213,24 @@ void QtGuiApplication1::encryption()
 		emit ifencryption(false);
 
 
+}
+
+void QtGuiApplication1::closeEvent(QCloseEvent*event)
+{
+
+	QMessageBox::StandardButton button;
+	button = QMessageBox::question(this, QString::fromLocal8Bit("退出程序"), QString::fromLocal8Bit("确认退出程序"), QMessageBox::Yes | QMessageBox::No);
+	if (button == QMessageBox::No)
+	{
+		event->ignore();
+	}
+
+	else if(button == QMessageBox::Yes)
+	{
+		
+		emit StopRecv();
+		
+
+		event->accept();
+	}
 }

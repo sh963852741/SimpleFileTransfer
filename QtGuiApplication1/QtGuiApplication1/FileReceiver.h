@@ -35,25 +35,29 @@ public slots:
 	void StopReceiving();
 	void updateRecvFloder(QString floder);
 	void BeginReceiving();
+	void updaterevlog(QString floder, QString fliename, QTime time, QString mes);
 private:
 	Listener* listener = new Listener;
 	QThreadPool threadpool;
 	unsigned short recvCount = 0;
+	bool islistening = false;
 signals:
 	void BeginRecvSingleFile(QString filePath, QTime time);
 	void ReceiveFinished(unsigned short id, QString msg, QTime time);
 };
 
 class SingleFileReceiver :public QObject, public QRunnable
-{
+{                   
 	Q_OBJECT
 public:
 	unsigned short seqID;
 	static bool stop;
 	string saveFlod;
+	string filepath;
 	void run();
 	SOCKET socket;
 signals:
+	void updatelog(QString floder, QString fliename, QTime time, QString mes);
 	void finished(unsigned short id, bool success, QString msg);
 	void begin(QString filePath);
 };

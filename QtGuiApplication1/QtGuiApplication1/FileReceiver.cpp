@@ -46,8 +46,10 @@ void SingleFileReceiver::run()
 		}
 
 
-		unsigned int fileLength;
-		string fileName = (char*)&RevData[12];
+		unsigned long long int fileLength;
+		
+		string fileName = (char*)&RevData[20];
+		filepath = fileName;
 		string fullPath = saveFlod + fileName;
 		emit begin(QString::fromLocal8Bit(fullPath.c_str()));
 		string tempfile = fullPath;
@@ -56,8 +58,8 @@ void SingleFileReceiver::run()
 		string comprefile = fullPath;
 		comprefile.replace(comprefile.begin() + comprefile.find_last_of('.'), comprefile.end(), "Compre.tmp");
 		
-		memcpy_s(&fileLength, 4, &RevData[4], 4);
-		unsigned int requestPosition;
+		memcpy_s(&fileLength, 8, &RevData[4], 8);
+		unsigned long long int requestPosition;
 
 		if (iscompress)
 		{
@@ -98,11 +100,11 @@ void SingleFileReceiver::run()
 		}
 
 		/*请求客户端从指定位置开始发送文件*/
-		send(socket, (char*)&requestPosition, 4, 0);
+		send(socket, (char*)&requestPosition, 8, 0);
 
 		/*开始接收文件*/
 		fileWriter.seekp(requestPosition, ios::beg);
-		for (unsigned int i = requestPosition; i < fileLength;)
+		for (unsigned long long int i = requestPosition; i < fileLength;)
 		{
 			rev = recv(socket, (char*)RevData, 1024, 0);
 			if (isencrypt)
@@ -113,7 +115,7 @@ void SingleFileReceiver::run()
 				}
 			}
 			/* 如果传输中断 */
-			if (stop || rev == SOCKET_ERROR || rev == 0)
+			if (stop || rev == SOCKET_ERROR || rev <= 0)
 			{
 				/*记录当前下载进度*/
 				ofstream writetemp;
@@ -122,6 +124,7 @@ void SingleFileReceiver::run()
 				writetemp.close();
 				fileWriter.close();
 				closesocket(socket);
+				emit emit updatelog(QString::fromLocal8Bit(saveFlod.c_str()), QString::fromLocal8Bit(fileName.c_str()), QTime::currentTime(), QString::fromLocal8Bit("接收中断"));
 				emit finished(seqID, false, QString::fromLocal8Bit("传输中断"));
 				return;
 			}
@@ -143,10 +146,12 @@ void SingleFileReceiver::run()
 		rev = recv(socket, (char*)RevData, 16, 0);
 		if (strcmp((char*)RevData, "finish") == 0)
 		{
+			emit emit updatelog(QString::fromLocal8Bit(saveFlod.c_str()), QString::fromLocal8Bit(fileName.c_str()), QTime::currentTime(), QString::fromLocal8Bit("接收成功"));
 			emit finished(seqID, true, "");
 		}
 		else
 		{
+			emit emit updatelog(QString::fromLocal8Bit(saveFlod.c_str()), QString::fromLocal8Bit(fileName.c_str()), QTime::currentTime(), QString::fromLocal8Bit("接收失败"));
 			emit finished(seqID, false, "");
 		}
 		closesocket(socket);
@@ -190,12 +195,16 @@ void Listener::run()
 
 void FilesReceiver::BeginListening(QString IPaddress)
 {
-	qRegisterMetaType<SOCKET>("SOCKET");
-	connect(listener, &Listener::IncommingFile, this, &FilesReceiver::ReceiveSingleFile);
-	//connect(listener, &Listener::finished, listener, &Listener::deleteLater);
-	listener->ipAddress = IPaddress.mid(0, IPaddress.indexOf(":")).toLocal8Bit();
-	listener->port = IPaddress.mid(IPaddress.indexOf(":") + 1).toLocal8Bit();
-	listener->start();
+	if (!islistening)
+	{
+		islistening = true;
+		qRegisterMetaType<SOCKET>("SOCKET");
+		connect(listener, &Listener::IncommingFile, this, &FilesReceiver::ReceiveSingleFile);
+		//connect(listener, &Listener::finished, listener, &Listener::deleteLater);
+		listener->ipAddress = IPaddress.mid(0, IPaddress.indexOf(":")).toLocal8Bit();
+		listener->port = IPaddress.mid(IPaddress.indexOf(":") + 1).toLocal8Bit();
+		listener->start();
+	}
 }
 
 
@@ -223,7 +232,7 @@ void FilesReceiver::ReceiveSingleFile(SOCKET socket)
 	fr->saveFlod = this->saveFlod.toLocal8Bit();
 	connect(fr, &SingleFileReceiver::begin, this, &FilesReceiver::process_Begin);
 	connect(fr, &SingleFileReceiver::finished, this, &FilesReceiver::process_Finished);
-
+	connect(fr, &SingleFileReceiver::updatelog, this, &FilesReceiver::updaterevlog);
 	fr->socket = socket;
 	if (SingleFileReceiver::stop) closesocket(socket);
 	else threadpool.start(fr);
@@ -244,4 +253,16 @@ void FilesReceiver::BeginReceiving()
 void FilesReceiver::updateRecvFloder(QString floder)
 {
 	this->saveFlod = floder;
+}
+
+void FilesReceiver::updaterevlog(QString floder, QString filename, QTime time, QString mes)
+{
+	ofstream output;
+	output.open("receivelog.csv", ios::app);
+	string nowtime = time.toString("h:m:s").toLocal8Bit();
+	string flodername = floder.toLocal8Bit();
+	string file = filename.toLocal8Bit();
+	string message = mes.toLocal8Bit();
+	output << nowtime << "," << flodername << "," << file << "," << message << '\n';
+	output.close();
 }
