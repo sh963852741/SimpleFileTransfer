@@ -72,11 +72,20 @@ void SingleFileReceiver::run()
 		/*先判断文件是否需要断点续传*/
 		if (fileWriter.is_open()) // 如果文件已经下载
 		{
-			ifstream readTmpFile;
-			readTmpFile.open(tempfile);
-			if (readTmpFile.is_open())readTmpFile >> requestPosition;
-			else requestPosition = 0;
-			readTmpFile.close();
+			//判断是否已经传输完成
+			QFileInfo fileInfo(QString::fromLocal8Bit(tempfile.c_str()));
+			if (fileInfo.isFile())
+			{
+				ifstream readTmpFile;
+				readTmpFile.open(tempfile);
+				if (readTmpFile.is_open())readTmpFile >> requestPosition;
+				else requestPosition = 0;
+				readTmpFile.close();
+			}
+			else
+			{
+				requestPosition =fileLength;
+			}
 		}
 		else // 如果文件没有下载
 		{
@@ -146,6 +155,9 @@ void SingleFileReceiver::run()
 		rev = recv(socket, (char*)RevData, 16, 0);
 		if (strcmp((char*)RevData, "finish") == 0)
 		{
+			//传输完成删除tmp文件
+			QString str = QString::fromLocal8Bit(tempfile.c_str());
+			QFile::remove(str);
 			emit emit updatelog(QString::fromLocal8Bit(saveFlod.c_str()), QString::fromLocal8Bit(fileName.c_str()), QTime::currentTime(), QString::fromLocal8Bit("接收成功"));
 			emit finished(seqID, true, "");
 		}
