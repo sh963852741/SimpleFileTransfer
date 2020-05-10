@@ -55,7 +55,8 @@ void SingleFileSender::run()
 	{
 		string fullname = floderName + fileName;
 		tempfile = fullname;
-		tempfile.replace(tempfile.begin() + tempfile.find_last_of('.'), tempfile.end(), ".tmp");
+		tempfile.append(".tmp");
+		//tempfile.replace(tempfile.begin() + tempfile.find_last_of('.'), tempfile.end(), ".tmp");
 		emit compressing(seqID);
 		def(fullname, tempfile, Z_DEFAULT_COMPRESSION);
 		fp.open(tempfile, ios::binary);
