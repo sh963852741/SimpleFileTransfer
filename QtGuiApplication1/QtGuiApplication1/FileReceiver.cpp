@@ -53,10 +53,12 @@ void SingleFileReceiver::run()
 		string fullPath = saveFlod + fileName;
 		emit begin(QString::fromLocal8Bit(fullPath.c_str()));
 		string tempfile = fullPath;
-		tempfile.replace(tempfile.begin() + tempfile.find_last_of('.'), tempfile.end(), ".tmp");
+		tempfile.append(".tmp");
+		//tempfile.replace(tempfile.begin() + tempfile.find_last_of('.'), tempfile.end(), ".tmp");
 
 		string comprefile = fullPath;
-		comprefile.replace(comprefile.begin() + comprefile.find_last_of('.'), comprefile.end(), "Compre.tmp");
+		comprefile.append(".Compare.tmp");
+		//comprefile.replace(comprefile.begin() + comprefile.find_last_of('.'), comprefile.end(), "Compre.tmp");
 		
 		memcpy_s(&fileLength, 8, &RevData[4], 8);
 		unsigned long long int requestPosition;
